@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Book Issues | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Book Issues</h1>
+        <p>Manage issued and returned library books.</p>
+    </div>
+
+    <a href="{% url 'issue-book' %}" class="primary-btn">
+        + Issue Book
+    </a>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" action="{% url 'book-issue-list' %}" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search book or student..."
+            value="{{ search }}"
+        >
+
+        <select name="status">
+
+            <option value="">All Status</option>
+
+            <option value="Issued"
+                {% if selected_status == "Issued" %}selected{% endif %}>
+                Issued
+            </option>
+
+            <option value="Returned"
+                {% if selected_status == "Returned" %}selected{% endif %}>
+                Returned
+            </option>
+
+            <option value="Overdue"
+                {% if selected_status == "Overdue" %}selected{% endif %}>
+                Overdue
+            </option>
+
+        </select>
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Issue Records</h2>
+            <p>All library book issue records.</p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Book</th>
+                    <th>Student</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for issue in issues %}
+
+                <tr>
+
+                    <td>
+                        {{ issue.book.title }}
+                    </td>
+
+                    <td>
+                        {{ issue.student.student_id }}
+                        - 
+                        {{ issue.student.name }}
+                    </td>
+
+                    <td>
+                        {{ issue.issue_date|date:"d-m-Y" }}
+                    </td>
+
+                    <td>
+                        {{ issue.due_date|date:"d-m-Y" }}
+                    </td>
+
+                    <td>
+                        {% if issue.return_date %}
+                            {{ issue.return_date|date:"d-m-Y" }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+
+                        {% if issue.status == "Issued" %}
+
+                            <span style="color: #2563eb; font-weight: 600;">
+                                Issued
+                            </span>
+
+                        {% elif issue.status == "Returned" %}
+
+                            <span style="color: #16a34a; font-weight: 600;">
+                                Returned
+                            </span>
+
+                        {% else %}
+
+                            <span style="color: #dc2626; font-weight: 600;">
+                                Overdue
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if issue.status != "Returned" %}
+
+                        <a
+                            href="{% url 'return-book' issue.id %}"
+                            style="color: #16a34a;"
+                        >
+                            Return
+                        </a>
+
+                        {% else %}
+
+                            -
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7" class="empty-state">
+                        No issue records found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

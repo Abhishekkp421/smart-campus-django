@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Fee | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Fee</h1>
+        <p>Remove a student fee record from the system.</p>
+    </div>
+
+    <a href="{% url 'fee-list' %}" class="secondary-btn">Back to Fees</a>
+</div>
+
+<div class="dashboard-section">
+
+    <h2>Confirm Deletion</h2>
+    <p>Please review the fee record before deleting it.</p>
+
+    <br>
+
+    <p>
+        Are you sure you want to delete this fee?
+    </p>
+
+    <p>
+        <strong>Student:</strong>
+        {{ fee.student.student_id }} - {{ fee.student.name }}
+    </p>
+
+    <p>
+        <strong>Fee Type:</strong> {{ fee.fee_type }}
+    </p>
+
+    <p>
+        <strong>Amount:</strong> ₹{{ fee.amount }}
+    </p>
+
+    <p>
+        <strong>Status:</strong> {{ fee.status }}
+    </p>
+
+    <form method="POST" style="text-align:right; margin-top:30px;">
+        {% csrf_token %}
+
+        <a href="{% url 'fee-list' %}" class="secondary-btn">
+            Cancel
+        </a>
+
+        <button
+            type="submit"
+            style="background:#dc2626; color:white; border:none; padding:12px 20px; border-radius:8px; cursor:pointer;"
+        >
+            Delete Fee
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

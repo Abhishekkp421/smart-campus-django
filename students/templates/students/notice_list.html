@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Notices | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Notices</h1>
+        <p>Manage and publish campus notices.</p>
+    </div>
+
+    <a href="{% url 'add-notice' %}" class="primary-btn">+ Add Notice</a>
+</div>
+
+<div class="filter-card">
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search notices..."
+            value="{{ search }}"
+        >
+
+        <select name="notice_type">
+            <option value="">All Types</option>
+            <option value="General" {% if selected_notice_type == "General" %}selected{% endif %}>General</option>
+            <option value="Academic" {% if selected_notice_type == "Academic" %}selected{% endif %}>Academic</option>
+            <option value="Exam" {% if selected_notice_type == "Exam" %}selected{% endif %}>Exam</option>
+            <option value="Fee" {% if selected_notice_type == "Fee" %}selected{% endif %}>Fee</option>
+            <option value="Event" {% if selected_notice_type == "Event" %}selected{% endif %}>Event</option>
+        </select>
+
+        <button type="submit" class="primary-btn">Filter</button>
+
+    </form>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Notice Records</h2>
+            <p>All campus notices.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Publish Date</th>
+                    <th>Expiry Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for notice in notices %}
+                <tr>
+                    <td>{{ notice.title }}</td>
+                    <td>{{ notice.notice_type }}</td>
+                    <td>{{ notice.publish_date|date:"d-m-Y" }}</td>
+                    <td>
+                        {% if notice.expiry_date %}
+                            {{ notice.expiry_date|date:"d-m-Y" }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if notice.is_active %}
+                            Active
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'edit-notice' notice.id %}">Edit</a>
+                        &nbsp;
+                        <a
+                            href="{% url 'delete-notice' notice.id %}"
+                            style="color:#dc2626;"
+                        >
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No notices found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

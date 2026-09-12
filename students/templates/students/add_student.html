@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Student | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Add Student</h1>
+        <p>Create a new student record.</p>
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+
+            <a href="{% url 'student-dashboard' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Student
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

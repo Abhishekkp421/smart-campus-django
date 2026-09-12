@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Assignment | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Delete Assignment</h1>
+        <p>Remove an assignment from the system.</p>
+    </div>
+
+    <a href="{% url 'assignment-list' %}" class="secondary-btn">
+        Back to Assignments
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Confirm Deletion</h2>
+            <p>Please review the assignment before deleting it.</p>
+        </div>
+    </div>
+
+
+    <div style="margin-top: 30px;">
+
+        <p>
+            Are you sure you want to delete this assignment?
+        </p>
+
+        <p>
+            <strong>Title:</strong>
+            {{ assignment.title }}
+        </p>
+
+        <p>
+            <strong>Subject:</strong>
+            {{ assignment.subject.code }} -
+            {{ assignment.subject.name }}
+        </p>
+
+        <p>
+            <strong>Due Date:</strong>
+            {{ assignment.due_date|date:"d-m-Y" }}
+        </p>
+
+        <p>
+            <strong>Maximum Marks:</strong>
+            {{ assignment.max_marks }}
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div style="text-align: right; margin-top: 30px;">
+
+            <a
+                href="{% url 'assignment-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                style="
+                    background: #dc2626;
+                    color: white;
+                    border: none;
+                    padding: 12px 22px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 15px;
+                "
+            >
+                Delete Assignment
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Faculty</h1>
+        <p>Manage and search faculty records.</p>
+    </div>
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by ID, name, email, phone or designation..."
+            value="{{ search_query }}"
+        >
+
+        <select name="department">
+
+            <option value="">All Departments</option>
+
+            {% for department in departments %}
+
+            <option
+                value="{{ department.id }}"
+                {% if department_filter == department.id|stringformat:"s" %}
+                    selected
+                {% endif %}
+            >
+                {{ department.code }} - {{ department.name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <button type="submit" class="primary-btn">
+            Search
+        </button>
+
+        <a href="{% url 'faculty-list' %}" class="secondary-btn">
+            Reset
+        </a>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Faculty Records</h2>
+
+            <p>
+                Showing {{ faculties|length }} faculty member{{ faculties|pluralize }}.
+            </p>
+        </div>
+
+       <a href="{% url 'add-faculty' %}" class="primary-btn">
+    + Add Faculty
+</a>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for faculty in faculties %}
+
+                <tr>
+
+                    <td>
+                        {{ faculty.employee_id }}
+                    </td>
+
+                    <td>
+                        {{ faculty.name }}
+                    </td>
+
+                    <td>
+                        {{ faculty.email }}
+                    </td>
+
+                    <td>
+                        {{ faculty.phone }}
+                    </td>
+
+                    <td>
+                        {{ faculty.department.code }}
+                    </td>
+
+                    <td>
+                        {{ faculty.designation }}
+                    </td>
+
+                    <td class="actions">
+
+                        <a href="{% url 'faculty-detail' faculty.id %}" class="action-btn view-btn">
+    View
+</a>
+
+                       <a href="{% url 'edit-faculty' faculty.id %}" class="action-btn edit-btn">
+    Edit
+</a>
+
+                        <a href="{% url 'delete-faculty' faculty.id %}" class="action-btn delete-btn">
+    Delete
+</a>
+
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No faculty found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Fees | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Fees</h1>
+        <p>Manage and track student fee payments.</p>
+    </div>
+
+    <a href="{% url 'add-fee' %}" class="primary-btn">+ Add Fee</a>
+</div>
+
+<div class="filter-card">
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search student or fee type..."
+            value="{{ search }}"
+        >
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Pending" {% if selected_status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Partial" {% if selected_status == "Partial" %}selected{% endif %}>Partial</option>
+            <option value="Paid" {% if selected_status == "Paid" %}selected{% endif %}>Paid</option>
+        </select>
+
+        <button type="submit" class="primary-btn">Filter</button>
+
+    </form>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Fee Records</h2>
+            <p>All student fee records.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Fee Type</th>
+                    <th>Amount</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for fee in fees %}
+                <tr>
+                    <td>{{ fee.student.student_id }} - {{ fee.student.name }}</td>
+                    <td>{{ fee.fee_type }}</td>
+                    <td>₹{{ fee.amount }}</td>
+                    <td>₹{{ fee.paid_amount }}</td>
+                    <td>{{ fee.status }}</td>
+                    <td>{{ fee.due_date|date:"d-m-Y" }}</td>
+
+                    <td>
+                        <a href="{% url 'edit-fee' fee.id %}">Edit</a>
+                        &nbsp;
+                        <a href="{% url 'delete-fee' fee.id %}" style="color:#dc2626;">Delete</a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No fee records found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

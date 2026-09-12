@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Result | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Result</h1>
+        <p>Remove a student's examination result from the system.</p>
+    </div>
+
+    <a href="{% url 'result-list' %}" class="secondary-btn">
+        Back to Results
+    </a>
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Confirm Deletion</h2>
+            <p>Please review the result before deleting it.</p>
+        </div>
+    </div>
+
+
+    <div style="padding: 20px 0;">
+
+        <p style="font-size: 17px; margin-bottom: 20px;">
+            Are you sure you want to delete this result?
+        </p>
+
+        <p>
+            <strong>Student:</strong>
+            {{ result.student.student_id }} - {{ result.student.name }}
+        </p>
+
+        <p>
+            <strong>Exam:</strong>
+            {{ result.exam.name }}
+        </p>
+
+        <p>
+            <strong>Subject:</strong>
+            {{ result.subject.code }} - {{ result.subject.name }}
+        </p>
+
+        <p>
+            <strong>Marks:</strong>
+            {{ result.marks_obtained }} / {{ result.max_marks }}
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div style="text-align: right; margin-top: 20px;">
+
+            <a
+                href="{% url 'result-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+                style="background: #dc2626;"
+            >
+                Delete Result
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

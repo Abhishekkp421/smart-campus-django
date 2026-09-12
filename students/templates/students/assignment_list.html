@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Assignments | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Assignments</h1>
+        <p>Manage and track student assignments.</p>
+    </div>
+
+    <a href="{% url 'add-assignment' %}" class="primary-btn">
+        + Add Assignment
+    </a>
+</div>
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search assignments..."
+            value="{{ search_query }}"
+        >
+
+        <select name="subject">
+            <option value="">All Subjects</option>
+
+            {% for subject in subjects %}
+            <option
+                value="{{ subject.id }}"
+                {% if subject_filter == subject.id|stringformat:"s" %}selected{% endif %}
+            >
+                {{ subject.code }} - {{ subject.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Assignment Records</h2>
+            <p>All scheduled assignments.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th>Due Date</th>
+                    <th>Max Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for assignment in assignments %}
+
+                <tr>
+                    <td>{{ assignment.title }}</td>
+
+                    <td>
+                        {{ assignment.subject.code }} -
+                        {{ assignment.subject.name }}
+                    </td>
+
+                    <td>
+                        {% if assignment.faculty %}
+                            {{ assignment.faculty.name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ assignment.due_date|date:"d-m-Y" }}
+                    </td>
+
+                    <td>
+                        {{ assignment.max_marks }}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'edit-assignment' assignment.id %}">
+                            Edit
+                        </a>
+
+                        &nbsp;
+
+                        <a
+                            href="{% url 'delete-assignment' assignment.id %}"
+                            style="color: #dc2626;"
+                        >
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No assignments found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, Admin. Here's what's happening today.</p>
+    </div>
+
+</div>
+
+
+<!-- Statistics Cards -->
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🎓</div>
+
+        <div>
+            <p>Total Students</p>
+            <h2>{{ total_students }}</h2>
+        </div>
+    </div>
+
+
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🏫</div>
+
+        <div>
+            <p>Total Faculty</p>
+            <h2>{{ total_faculty }}</h2>
+        </div>
+    </div>
+
+
+    <div class="stat-card">
+        <div class="stat-icon">📚</div>
+
+        <div>
+            <p>Total Courses</p>
+            <h2>{{ total_courses }}</h2>
+        </div>
+    </div>
+
+
+    <div class="stat-card">
+        <div class="stat-icon">📅</div>
+
+        <div>
+            <p>Attendance</p>
+            <h2>N/A</h2>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Recent Students -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Recent Students</h2>
+            <p>Recently added students.</p>
+        </div>
+
+        <a href="{% url 'add-student' %}" class="primary-btn">
+           + Add Student
+        </a>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Department</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for student in recent_students %}
+
+                <tr>
+
+                    <td>{{ student.student_id }}</td>
+
+                    <td>{{ student.name }}</td>
+
+                    <td>{{ student.email }}</td>
+
+                    <td>{{ student.course.code }}</td>
+
+                    <td>{{ student.semester.name }}</td>
+
+                    <td>{{ student.department.code }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No students available yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

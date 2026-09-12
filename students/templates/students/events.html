@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Events | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Events</h1>
+        <p>Manage and view campus events.</p>
+    </div>
+
+    <a href="{% url 'add-event' %}" class="primary-btn">
+        + Add Event
+    </a>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" action="{% url 'event-list' %}" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search events..."
+            value="{{ search }}"
+        >
+
+        <select name="event_type">
+
+            <option value="">All Event Types</option>
+
+            {% for value, label in event_types %}
+
+            <option
+                value="{{ value }}"
+                {% if selected_event_type == value %}selected{% endif %}
+            >
+                {{ label }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Event Records</h2>
+            <p>All scheduled campus events.</p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Event Title</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Venue</th>
+                    <th>Organizer</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for event in events %}
+
+                <tr>
+
+                    <td>{{ event.title }}</td>
+
+                    <td>{{ event.event_type }}</td>
+
+                    <td>{{ event.date|date:"d-m-Y" }}</td>
+
+                    <td>{{ event.time|time:"H:i" }}</td>
+
+                    <td>{{ event.venue }}</td>
+
+                    <td>{{ event.organizer }}</td>
+
+                    <td>
+
+                        <a href="{% url 'edit-event' event.id %}">
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'delete-event' event.id %}"
+                            style="color: #dc2626; margin-left: 12px;"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7" class="empty-state">
+                        No events found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

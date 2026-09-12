@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Notice | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Notice</h1>
+        <p>Update the campus notice.</p>
+    </div>
+
+    <a href="{% url 'notice-list' %}" class="secondary-btn">
+        Back to Notices
+    </a>
+</div>
+
+<div class="form-card">
+
+    <h2>Notice Details</h2>
+    <p>Update the notice information below.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Notice Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ notice.title }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Notice Type</label>
+                <select name="notice_type" required>
+                    <option value="General" {% if notice.notice_type == "General" %}selected{% endif %}>General</option>
+                    <option value="Academic" {% if notice.notice_type == "Academic" %}selected{% endif %}>Academic</option>
+                    <option value="Exam" {% if notice.notice_type == "Exam" %}selected{% endif %}>Exam</option>
+                    <option value="Fee" {% if notice.notice_type == "Fee" %}selected{% endif %}>Fee</option>
+                    <option value="Event" {% if notice.notice_type == "Event" %}selected{% endif %}>Event</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="grid-column:1 / -1;">
+                <label>Content</label>
+                <textarea
+                    name="content"
+                    rows="6"
+                    required
+                >{{ notice.content }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Publish Date</label>
+                <input
+                    type="date"
+                    name="publish_date"
+                    value="{{ notice.publish_date|date:'Y-m-d' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Expiry Date</label>
+                <input
+                    type="date"
+                    name="expiry_date"
+                    value="{{ notice.expiry_date|date:'Y-m-d' }}"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input
+                        type="checkbox"
+                        name="is_active"
+                        {% if notice.is_active %}checked{% endif %}
+                    >
+                    Active Notice
+                </label>
+            </div>
+
+        </div>
+
+        <div style="text-align:right; margin-top:25px;">
+            <a href="{% url 'notice-list' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Changes
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

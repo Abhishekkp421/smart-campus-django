@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Exam | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Exam</h1>
+        <p>Remove an examination schedule from the system.</p>
+    </div>
+
+    <a href="{% url 'exam-list' %}" class="secondary-btn">
+        Back to Exams
+    </a>
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Confirm Deletion</h2>
+            <p>Please review the exam before deleting it.</p>
+        </div>
+    </div>
+
+
+    <div style="padding: 20px 0;">
+
+        <p style="font-size: 17px; margin-bottom: 10px;">
+            Are you sure you want to delete this exam?
+        </p>
+
+        <p>
+            <strong>Exam:</strong> {{ exam.name }}
+        </p>
+
+        <p>
+            <strong>Type:</strong> {{ exam.exam_type }}
+        </p>
+
+        <p>
+            <strong>Course:</strong> {{ exam.course.code }}
+        </p>
+
+        <p>
+            <strong>Semester:</strong> {{ exam.semester.name }}
+        </p>
+
+        <p>
+            <strong>Dates:</strong>
+            {{ exam.start_date|date:"d-m-Y" }}
+            to
+            {{ exam.end_date|date:"d-m-Y" }}
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div style="text-align: right; margin-top: 20px;">
+
+            <a
+                href="{% url 'exam-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+                style="background: #dc2626;"
+            >
+                Delete Exam
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

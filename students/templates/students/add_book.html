@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Add Book | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Add Book</h1>
+        <p>Add a new book to the campus library.</p>
+    </div>
+
+    <a href="{% url 'book-list' %}" class="secondary-btn">
+        Back to Library
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Book Details</h2>
+            <p>Enter the book information below.</p>
+        </div>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Book Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter book title"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Author</label>
+
+                <input
+                    type="text"
+                    name="author"
+                    placeholder="Enter author name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>ISBN</label>
+
+                <input
+                    type="text"
+                    name="isbn"
+                    placeholder="Enter ISBN"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Category</label>
+
+                <select name="category" required>
+
+                    <option value="">Select Category</option>
+
+                    <option value="Programming">Programming</option>
+                    <option value="Database">Database</option>
+                    <option value="AI/ML">AI/ML</option>
+                    <option value="Networking">Networking</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="General">General</option>
+                    <option value="Other">Other</option>
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Publisher</label>
+
+                <input
+                    type="text"
+                    name="publisher"
+                    placeholder="Enter publisher name"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Total Copies</label>
+
+                <input
+                    type="number"
+                    name="total_copies"
+                    min="1"
+                    value="1"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Shelf Location</label>
+
+                <input
+                    type="text"
+                    name="shelf_location"
+                    placeholder="Example: A-12"
+                >
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'book-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Add Book
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

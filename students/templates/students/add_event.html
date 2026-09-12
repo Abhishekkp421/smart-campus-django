@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Add Event | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Add Event</h1>
+        <p>Create a new campus event.</p>
+    </div>
+
+    <a href="{% url 'event-list' %}" class="secondary-btn">
+        Back to Events
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Event Details</h2>
+            <p>Enter the event information below.</p>
+        </div>
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Event Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter event title"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Event Type</label>
+
+                <select name="event_type" required>
+
+                    <option value="">Select Event Type</option>
+
+                    <option value="Seminar">Seminar</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Meeting">Meeting</option>
+                    <option value="Other">Other</option>
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Date</label>
+
+                <input
+                    type="date"
+                    name="date"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Time</label>
+
+                <input
+                    type="time"
+                    name="time"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Venue</label>
+
+                <input
+                    type="text"
+                    name="venue"
+                    placeholder="Enter venue"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Organizer</label>
+
+                <input
+                    type="text"
+                    name="organizer"
+                    placeholder="Enter organizer name"
+                    required
+                >
+            </div>
+
+
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    rows="6"
+                    placeholder="Enter event description"
+                    required
+                ></textarea>
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'event-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Create Event
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

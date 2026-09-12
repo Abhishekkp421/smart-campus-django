@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Results | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Results</h1>
+        <p>Manage and view student examination results.</p>
+    </div>
+
+    <a href="{% url 'add-result' %}" class="primary-btn">
+        + Add Result
+    </a>
+    <a href="{% url 'marksheet-list' %}" class="secondary-btn">
+      View Marksheet
+    </a>
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" action="{% url 'result-list' %}" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search_query }}"
+            placeholder="Search student, exam or subject..."
+        >
+
+        <select name="exam">
+            <option value="">All Exams</option>
+
+            {% for exam in exams %}
+            <option
+                value="{{ exam.id }}"
+                {% if exam_filter == exam.id|stringformat:"s" %}selected{% endif %}
+            >
+                {{ exam.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+
+        <select name="subject">
+            <option value="">All Subjects</option>
+
+            {% for subject in subjects %}
+            <option
+                value="{{ subject.id }}"
+                {% if subject_filter == subject.id|stringformat:"s" %}selected{% endif %}
+            >
+                {{ subject.code }} - {{ subject.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Result Records</h2>
+            <p>All student examination results.</p>
+        </div>
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Exam</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Percentage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>
+                        {{ result.student.student_id }}
+                        - {{ result.student.name }}
+                    </td>
+
+                    <td>
+                        {{ result.exam.name }}
+                    </td>
+
+                    <td>
+                        {{ result.subject.code }}
+                        - {{ result.subject.name }}
+                    </td>
+
+                    <td>
+                        {{ result.marks_obtained }}
+                        / {{ result.max_marks }}
+                    </td>
+
+                    <td>
+                        {% widthratio result.marks_obtained result.max_marks 100 %}%
+                    </td>
+
+                    <td>
+
+                        <a href="{% url 'edit-result' result.id %}">
+                            Edit
+                        </a>
+
+                        &nbsp;&nbsp;
+
+                        <a
+                            href="{% url 'delete-result' result.id %}"
+                            style="color: #dc2626;"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No result records found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

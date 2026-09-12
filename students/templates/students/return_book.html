@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Return Book | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Return Book</h1>
+        <p>Return the issued library book.</p>
+    </div>
+
+    <a href="{% url 'book-issue-list' %}" class="secondary-btn">
+        Back to Issue Records
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Return Details</h2>
+            <p>Confirm the return of this book.</p>
+        </div>
+
+    </div>
+
+
+    <div style="padding: 20px 0;">
+
+        <p>
+            <strong>Book:</strong>
+            {{ issue.book.title }}
+        </p>
+
+        <p>
+            <strong>Student:</strong>
+            {{ issue.student.student_id }} - {{ issue.student.name }}
+        </p>
+
+        <p>
+            <strong>Issue Date:</strong>
+            {{ issue.issue_date|date:"d-m-Y" }}
+        </p>
+
+        <p>
+            <strong>Due Date:</strong>
+            {{ issue.due_date|date:"d-m-Y" }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ issue.status }}
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label>Return Date</label>
+
+            <input
+                type="date"
+                name="return_date"
+                required
+            >
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'book-issue-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Return Book
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

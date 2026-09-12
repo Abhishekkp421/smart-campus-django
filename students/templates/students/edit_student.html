@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Student | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header detail-page-header">
+
+    <div class="page-title">
+        <h1>Edit Student</h1>
+        <p>Update student information and academic details.</p>
+    </div>
+
+    <a
+        href="{% url 'student-detail' student.id %}"
+        class="secondary-btn"
+    >
+        ← Back to Student
+    </a>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <!-- Personal Information -->
+
+        <div class="form-section">
+
+            <h2>Personal Information</h2>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+
+                    {% if field.name == "student_id" or field.name == "name" or field.name == "email" or field.name == "phone" or field.name == "date_of_birth" or field.name == "gender" %}
+
+                    <div class="form-group">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="field-error">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Academic Information -->
+
+        <div class="form-section">
+
+            <h2>Academic Information</h2>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+
+                    {% if field.name == "department" or field.name == "course" or field.name == "semester" or field.name == "admission_date" %}
+
+                    <div class="form-group">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="field-error">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Address -->
+
+        <div class="form-section">
+
+            <h2>Address</h2>
+
+            {% for field in form %}
+
+                {% if field.name == "address" %}
+
+                <div class="form-group full-width">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="field-error">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Form Errors -->
+
+        {% if form.non_field_errors %}
+
+        <div class="form-error">
+
+            {{ form.non_field_errors }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- Buttons -->
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'student-detail' student.id %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

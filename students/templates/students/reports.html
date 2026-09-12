@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}Reports & Analytics | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Reports & Analytics</h1>
+        <p>Overview of campus academic and administrative data.</p>
+    </div>
+
+</div>
+
+
+<!-- Academic Overview -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Academic Overview</h2>
+            <p>Key academic statistics.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Students</h3>
+            <h2>{{ total_students }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Faculty</h3>
+            <h2>{{ total_faculty }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Courses</h3>
+            <h2>{{ total_courses }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Subjects</h3>
+            <h2>{{ total_subjects }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Library Overview -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Library Overview</h2>
+            <p>Current library statistics.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Books</h3>
+            <h2>{{ total_books }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Copies</h3>
+            <h2>{{ total_book_copies }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Available</h3>
+            <h2>{{ available_book_copies }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Issued</h3>
+            <h2>{{ issued_books }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Overdue</h3>
+            <h2>{{ overdue_books }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Attendance Analytics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Attendance Analytics</h2>
+            <p>Overall student attendance statistics.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Records</h3>
+            <h2>{{ total_attendance }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Present</h3>
+            <h2>{{ present_attendance }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Absent</h3>
+            <h2>{{ absent_attendance }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Attendance %</h3>
+            <h2>{{ attendance_percentage }}%</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Result Analytics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Result Analytics</h2>
+            <p>Overall examination performance statistics.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Results</h3>
+            <h2>{{ total_results }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Marks Obtained</h3>
+            <h2>{{ total_marks_obtained }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Maximum Marks</h3>
+            <h2>{{ total_max_marks }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Overall Percentage</h3>
+            <h2>{{ overall_result_percentage }}%</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Fee Overview -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Fee Overview</h2>
+            <p>Fee collection and pending amounts.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Total Fees</h3>
+            <h2>₹{{ total_fees }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Paid Fees</h3>
+            <h2>₹{{ paid_fees }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Pending Fees</h3>
+            <h2>₹{{ pending_fees }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Collection %</h3>
+            <h2>{{ fee_collection_percentage }}%</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Other Statistics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Other Statistics</h2>
+            <p>Assignments, notices and campus events.</p>
+        </div>
+    </div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    ">
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Assignments</h3>
+            <h2>{{ total_assignments }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Notices</h3>
+            <h2>{{ total_notices }}</h2>
+        </div>
+
+        <div class="dashboard-section" style="margin:0; padding:22px;">
+            <h3>Events</h3>
+            <h2>{{ total_events }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Department-wise Analytics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Department-wise Students</h2>
+            <p>Student distribution across departments.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Code</th>
+                    <th>Total Students</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for department in department_stats %}
+
+                <tr>
+                    <td>{{ department.name }}</td>
+                    <td>{{ department.code }}</td>
+                    <td>{{ department.student_count }}</td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="3" class="empty-state">
+                        No department data found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Course-wise Analytics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Course-wise Students</h2>
+            <p>Student distribution across courses.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Code</th>
+                    <th>Total Students</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for course in course_stats %}
+
+                <tr>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.code }}</td>
+                    <td>{{ course.student_count }}</td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="3" class="empty-state">
+                        No course data found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+<!-- Student Performance Analytics -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Student Performance Analytics</h2>
+            <p>Overall academic performance of students.</p>
+        </div>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Total Results</th>
+                    <th>Marks Obtained</th>
+                    <th>Maximum Marks</th>
+                    <th>Percentage</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in student_performance %}
+
+                <tr>
+
+                    <td>{{ student.student_id }}</td>
+
+                    <td>{{ student.name }}</td>
+
+                    <td>{{ student.total_results }}</td>
+
+                    <td>{{ student.marks_obtained }}</td>
+
+                    <td>{{ student.max_marks }}</td>
+
+                    <td>{{ student.percentage }}%</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+                        No student performance data found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+{% endblock %}

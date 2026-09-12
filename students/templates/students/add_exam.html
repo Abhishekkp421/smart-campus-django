@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Add Exam | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Add Exam</h1>
+        <p>Create a new examination schedule.</p>
+    </div>
+
+    <a href="{% url 'exam-list' %}" class="secondary-btn">
+        Back to Exams
+    </a>
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Exam Details</h2>
+            <p>Enter the examination information below.</p>
+        </div>
+    </div>
+
+
+    {% if error %}
+    <div style="color: #dc2626; margin-bottom: 20px; font-weight: 600;">
+        {{ error }}
+    </div>
+    {% endif %}
+
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="name">Exam Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter exam name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="exam_type">Exam Type</label>
+
+                <select
+                    id="exam_type"
+                    name="exam_type"
+                    required
+                >
+                    <option value="">Select Exam Type</option>
+
+                    {% for value, label in exam_types %}
+                    <option value="{{ value }}">
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="course">Course</label>
+
+                <select
+                    id="course"
+                    name="course"
+                    required
+                >
+                    <option value="">Select Course</option>
+
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">
+                        {{ course.code }} - {{ course.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="semester">Semester</label>
+
+                <select
+                    id="semester"
+                    name="semester"
+                    required
+                >
+                    <option value="">Select Semester</option>
+
+                    {% for semester in semesters %}
+                    <option value="{{ semester.id }}">
+                        {{ semester.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+
+                <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                    required
+                >
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 30px;">
+
+            <a
+                href="{% url 'exam-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Create Exam
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

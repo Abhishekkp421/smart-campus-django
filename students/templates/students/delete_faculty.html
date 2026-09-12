@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Faculty | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Faculty</h1>
+        <p>Confirm faculty record deletion.</p>
+    </div>
+
+    <a href="{% url 'faculty-detail' faculty.id %}" class="secondary-btn">
+        Back to Faculty
+    </a>
+</div>
+
+
+<div class="form-card">
+
+    <div class="delete-confirmation">
+
+        <h2>Are you sure?</h2>
+
+        <p>
+            You are about to delete the following faculty member:
+        </p>
+
+        <div class="delete-info">
+            <strong>{{ faculty.name }}</strong>
+            <span>Employee ID: {{ faculty.employee_id }}</span>
+            <span>Email: {{ faculty.email }}</span>
+        </div>
+
+        <p class="warning-text">
+            This action cannot be undone.
+        </p>
+
+    </div>
+
+
+    <div class="form-actions">
+
+        <a href="{% url 'faculty-detail' faculty.id %}" class="secondary-btn">
+            Cancel
+        </a>
+
+        <form method="POST" style="display: inline;">
+            {% csrf_token %}
+
+            <button type="submit" class="delete-confirm-btn">
+                Confirm Delete
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

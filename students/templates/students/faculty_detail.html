@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ faculty.name }} | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header detail-page-header">
+
+    <div class="page-title">
+        <h1>{{ faculty.name }}</h1>
+        <p>Employee ID: {{ faculty.employee_id }}</p>
+    </div>
+
+    <a href="{% url 'faculty-list' %}" class="secondary-btn">
+        Back to Faculty
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Faculty Information</h2>
+            <p>Personal and professional details.</p>
+        </div>
+    </div>
+
+
+    <div class="detail-grid">
+
+        <div class="detail-item">
+            <span class="detail-label">Employee ID</span>
+            <span class="detail-value">
+                {{ faculty.employee_id }}
+            </span>
+        </div>
+
+
+        <div class="detail-item">
+            <span class="detail-label">Full Name</span>
+            <span class="detail-value">
+                {{ faculty.name }}
+            </span>
+        </div>
+
+
+        <div class="detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">
+                {{ faculty.email }}
+            </span>
+        </div>
+
+
+        <div class="detail-item">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">
+                {{ faculty.phone }}
+            </span>
+        </div>
+
+
+        <div class="detail-item">
+            <span class="detail-label">Department</span>
+            <span class="detail-value">
+                {{ faculty.department.code }} - {{ faculty.department.name }}
+            </span>
+        </div>
+
+
+        <div class="detail-item">
+            <span class="detail-label">Designation</span>
+            <span class="detail-value">
+                {{ faculty.designation }}
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

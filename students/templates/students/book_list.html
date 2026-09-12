@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Library | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Library</h1>
+        <p>Manage and view library books.</p>
+    </div>
+
+    <a
+    href="{% url 'book-issue-list' %}"
+    class="secondary-btn"
+    style="margin-right: 10px;"
+>
+    📖 Book Issues
+</a>
+
+<a href="{% url 'add-book' %}" class="primary-btn">
+    + Add Book
+</a>
+
+</div>
+<div
+    style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 25px;
+    "
+>
+
+    <div class="dashboard-section" style="margin: 0; padding: 22px;">
+        <h3 style="margin: 0 0 8px;">Total Books</h3>
+        <h2 style="margin: 0;">{{ total_books }}</h2>
+    </div>
+
+
+    <div class="dashboard-section" style="margin: 0; padding: 22px;">
+        <h3 style="margin: 0 0 8px;">Total Copies</h3>
+        <h2 style="margin: 0;">{{ total_copies }}</h2>
+    </div>
+
+
+    <div class="dashboard-section" style="margin: 0; padding: 22px;">
+        <h3 style="margin: 0 0 8px;">Available Copies</h3>
+        <h2 style="margin: 0;">{{ available_copies }}</h2>
+    </div>
+
+
+    <div class="dashboard-section" style="margin: 0; padding: 22px;">
+        <h3 style="margin: 0 0 8px;">Issued Books</h3>
+        <h2 style="margin: 0;">{{ issued_books }}</h2>
+    </div>
+
+</div>
+
+<div class="filter-card">
+
+    <form method="GET" action="{% url 'book-list' %}" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search books..."
+            value="{{ search }}"
+        >
+
+        <select name="category">
+
+            <option value="">All Categories</option>
+
+            {% for value, label in categories %}
+
+            <option
+                value="{{ value }}"
+                {% if selected_category == value %}selected{% endif %}
+            >
+                {{ label }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Book Records</h2>
+            <p>All books available in the campus library.</p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Category</th>
+                    <th>Total Copies</th>
+                    <th>Available</th>
+                    <th>Shelf</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for book in books %}
+
+                <tr>
+
+                    <td>{{ book.title }}</td>
+
+                    <td>{{ book.author }}</td>
+
+                    <td>{{ book.isbn }}</td>
+
+                    <td>{{ book.category }}</td>
+
+                    <td>{{ book.total_copies }}</td>
+
+                    <td>{{ book.available_copies }}</td>
+
+                    <td>{{ book.shelf_location }}</td>
+
+                    <td>
+
+                        <a href="{% url 'edit-book' book.id %}">
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'delete-book' book.id %}"
+                            style="color: #dc2626; margin-left: 12px;"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="8" class="empty-state">
+                        No books found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

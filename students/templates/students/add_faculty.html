@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Add Faculty | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Add Faculty</h1>
+        <p>Add a new faculty member to the system.</p>
+    </div>
+
+    <a href="{% url 'faculty-list' %}" class="secondary-btn">
+        Back to Faculty
+    </a>
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="{{ form.employee_id.id_for_label }}">
+                    Employee ID
+                </label>
+
+                {{ form.employee_id }}
+
+                {% if form.employee_id.errors %}
+                    <div class="field-error">
+                        {{ form.employee_id.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">
+                    Full Name
+                </label>
+
+                {{ form.name }}
+
+                {% if form.name.errors %}
+                    <div class="field-error">
+                        {{ form.name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">
+                    Email
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+                    <div class="field-error">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.phone.id_for_label }}">
+                    Phone
+                </label>
+
+                {{ form.phone }}
+
+                {% if form.phone.errors %}
+                    <div class="field-error">
+                        {{ form.phone.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.department.id_for_label }}">
+                    Department
+                </label>
+
+                {{ form.department }}
+
+                {% if form.department.errors %}
+                    <div class="field-error">
+                        {{ form.department.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.designation.id_for_label }}">
+                    Designation
+                </label>
+
+                {{ form.designation }}
+
+                {% if form.designation.errors %}
+                    <div class="field-error">
+                        {{ form.designation.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a href="{% url 'faculty-list' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Faculty
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

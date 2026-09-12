@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Exams | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Exams</h1>
+        <p>Manage and view scheduled examinations.</p>
+    </div>
+
+    <a href="{% url 'add-exam' %}" class="primary-btn">
+        + Add Exam
+    </a>
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" action="{% url 'exam-list' %}" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search exams..."
+            value="{{ search_query }}"
+        >
+
+        <select name="exam_type">
+            <option value="">All Exam Types</option>
+
+            {% for value, label in exam_types %}
+            <option
+                value="{{ value }}"
+                {% if exam_type_filter == value %}selected{% endif %}
+            >
+                {{ label }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <select name="course">
+            <option value="">All Courses</option>
+
+            {% for course in courses %}
+            <option
+                value="{{ course.id }}"
+                {% if course_filter == course.id|stringformat:"s" %}selected{% endif %}
+            >
+                {{ course.code }} - {{ course.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <select name="semester">
+            <option value="">All Semesters</option>
+
+            {% for semester in semesters %}
+            <option
+                value="{{ semester.id }}"
+                {% if semester_filter == semester.id|stringformat:"s" %}selected{% endif %}
+            >
+                {{ semester.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Exam Records</h2>
+            <p>All scheduled examinations.</p>
+        </div>
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Exam Name</th>
+                    <th>Exam Type</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for exam in exams %}
+
+                <tr>
+
+                    <td>
+                        {{ exam.name }}
+                    </td>
+
+                    <td>
+                        {{ exam.exam_type }}
+                    </td>
+
+                    <td>
+                        {{ exam.course.code }}
+                    </td>
+
+                    <td>
+                        {{ exam.semester.name }}
+                    </td>
+
+                    <td>
+                        {{ exam.start_date|date:"d-m-Y" }}
+                    </td>
+
+                    <td>
+                        {{ exam.end_date|date:"d-m-Y" }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'edit-exam' exam.id %}"
+                            class="action-btn"
+                        >
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'delete-exam' exam.id %}"
+                            class="action-btn"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No exams found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

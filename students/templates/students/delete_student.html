@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Student | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="delete-card">
+
+    <h1>Delete Student?</h1>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ student.name }}</strong>
+        ({{ student.student_id }})?
+    </p>
+
+    <p class="warning-text">
+        This action cannot be undone.
+    </p>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <a
+            href="{% url 'student-detail' student.id %}"
+            class="secondary-btn"
+        >
+            Cancel
+        </a>
+
+        <button
+            type="submit"
+            class="delete-confirm-btn"
+        >
+            Delete Student
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

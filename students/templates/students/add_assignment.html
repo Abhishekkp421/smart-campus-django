@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Add Assignment | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Add Assignment</h1>
+        <p>Create a new student assignment.</p>
+    </div>
+
+    <a href="{% url 'assignment-list' %}" class="secondary-btn">
+        Back to Assignments
+    </a>
+
+</div>
+
+
+{% if error %}
+<div style="color: #dc2626; margin-bottom: 20px; font-weight: 600;">
+    {{ error }}
+</div>
+{% endif %}
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Assignment Details</h2>
+            <p>Enter the assignment information below.</p>
+        </div>
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Assignment Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter assignment title"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Subject</label>
+
+                <select name="subject" required>
+
+                    <option value="">
+                        Select Subject
+                    </option>
+
+                    {% for subject in subjects %}
+
+                    <option value="{{ subject.id }}">
+                        {{ subject.code }} - {{ subject.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Faculty</label>
+
+                <select name="faculty">
+
+                    <option value="">
+                        Select Faculty
+                    </option>
+
+                    {% for faculty in faculties %}
+
+                    <option value="{{ faculty.id }}">
+                        {{ faculty.employee_id }} - {{ faculty.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Due Date</label>
+
+                <input
+                    type="date"
+                    name="due_date"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Maximum Marks</label>
+
+                <input
+                    type="number"
+                    name="max_marks"
+                    value="100"
+                    min="1"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    placeholder="Enter assignment description"
+                ></textarea>
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'assignment-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Create Assignment
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

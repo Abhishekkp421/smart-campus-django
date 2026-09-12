@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Issue Book | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Issue Book</h1>
+        <p>Issue a library book to a student.</p>
+    </div>
+
+    <a href="{% url 'book-issue-list' %}" class="secondary-btn">
+        Back to Issue Records
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Issue Details</h2>
+            <p>Enter the book issue information below.</p>
+        </div>
+
+    </div>
+
+
+    {% if error %}
+
+    <div
+        style="
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        "
+    >
+        {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Book</label>
+
+                <select name="book" required>
+
+                    <option value="">
+                        Select Book
+                    </option>
+
+                    {% for book in books %}
+
+                    <option value="{{ book.id }}">
+                        {{ book.title }} — Available: {{ book.available_copies }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Student</label>
+
+                <select name="student" required>
+
+                    <option value="">
+                        Select Student
+                    </option>
+
+                    {% for student in students %}
+
+                    <option value="{{ student.id }}">
+                        {{ student.student_id }} — {{ student.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Issue Date</label>
+
+                <input
+                    type="date"
+                    name="issue_date"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Due Date</label>
+
+                <input
+                    type="date"
+                    name="due_date"
+                    required
+                >
+
+            </div>
+
+
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+
+                <label>Remarks</label>
+
+                <textarea
+                    name="remarks"
+                    rows="5"
+                    placeholder="Enter any remarks (optional)"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'book-issue-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Issue Book
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

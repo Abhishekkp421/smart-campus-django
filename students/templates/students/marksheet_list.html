@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Marksheet | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Student Marksheet</h1>
+        <p>View examination results student-wise.</p>
+    </div>
+
+    <a href="{% url 'result-list' %}" class="secondary-btn">
+        Back to Results
+    </a>
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <select name="student" required>
+            <option value="">Select Student</option>
+
+            {% for student in students %}
+            <option
+                value="{{ student.id }}"
+                {% if selected_student and selected_student.id == student.id %}selected{% endif %}
+            >
+                {{ student.student_id }} - {{ student.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+
+        <select name="exam" required>
+            <option value="">Select Exam</option>
+
+            {% for exam in exams %}
+            <option
+                value="{{ exam.id }}"
+                {% if selected_exam and selected_exam.id == exam.id %}selected{% endif %}
+            >
+                {{ exam.name }} - {{ exam.course.code }} - {{ exam.semester.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+
+        <button type="submit" class="primary-btn">
+            View Marksheet
+        </button>
+
+    </form>
+
+</div>
+
+
+{% if selected_student and selected_exam %}
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>{{ selected_student.name }}</h2>
+
+            <p>
+                {{ selected_student.student_id }}
+                |
+                {{ selected_exam.name }}
+            </p>
+        </div>
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks Obtained</th>
+                    <th>Maximum Marks</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>
+                        {{ result.subject.code }}
+                        - {{ result.subject.name }}
+                    </td>
+
+                    <td>
+                        {{ result.marks_obtained }}
+                    </td>
+
+                    <td>
+                        {{ result.max_marks }}
+                    </td>
+
+                    <td>
+                        {% widthratio result.marks_obtained result.max_marks 100 %}%
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        No results found for this student and exam.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% if results %}
+
+    <div
+        style="
+            display: flex;
+            justify-content: flex-end;
+            gap: 40px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        "
+    >
+
+        <div>
+            <strong>Total Marks:</strong>
+            {{ obtained_marks }} / {{ total_marks }}
+        </div>
+
+        <div>
+            <strong>Overall Percentage:</strong>
+            {{ percentage }}%
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

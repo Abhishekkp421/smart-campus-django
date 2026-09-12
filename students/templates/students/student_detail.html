@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}
+Student Details | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header detail-page-header">
+
+    <div class="page-title">
+        <h1>{{ student.name }}</h1>
+        <p>Student ID: {{ student.student_id }}</p>
+    </div>
+
+    <a
+        href="{% url 'edit-student' student.id %}"
+        class="primary-btn"
+    >
+        Edit Student
+    </a>
+
+</div>
+
+
+<div class="detail-card">
+
+    <h2>Personal Information</h2>
+
+    <div class="detail-grid">
+
+        <div>
+            <span>Student ID</span>
+            <strong>{{ student.student_id }}</strong>
+        </div>
+
+        <div>
+            <span>Name</span>
+            <strong>{{ student.name }}</strong>
+        </div>
+
+        <div>
+            <span>Email</span>
+            <strong>{{ student.email }}</strong>
+        </div>
+
+        <div>
+            <span>Phone</span>
+            <strong>{{ student.phone }}</strong>
+        </div>
+
+        <div>
+            <span>Date of Birth</span>
+            <strong>{{ student.date_of_birth }}</strong>
+        </div>
+
+        <div>
+            <span>Gender</span>
+            <strong>{{ student.gender }}</strong>
+        </div>
+
+    </div>
+
+
+    <h2 class="detail-heading">
+        Academic Information
+    </h2>
+
+    <div class="detail-grid">
+
+        <div>
+            <span>Department</span>
+            <strong>{{ student.department.name }}</strong>
+        </div>
+
+        <div>
+            <span>Course</span>
+            <strong>{{ student.course.name }}</strong>
+        </div>
+
+        <div>
+            <span>Semester</span>
+            <strong>{{ student.semester.name }}</strong>
+        </div>
+
+        <div>
+            <span>Admission Date</span>
+            <strong>{{ student.admission_date }}</strong>
+        </div>
+
+    </div>
+
+
+    <h2 class="detail-heading">
+        Address
+    </h2>
+
+    <p class="address">
+        {{ student.address }}
+    </p>
+
+</div>
+
+{% endblock %}

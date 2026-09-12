@@ -1,0 +1,150 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Smart Campus{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <header class="topbar">
+
+        <div class="brand">
+            🎓 Smart Campus
+        </div>
+<div class="admin-profile">
+    <a href="/admin/" class="admin-link">
+        <span>Admin</span>
+        <span>👤</span>
+    </a>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">
+            Logout
+        </button>
+    </form>
+</div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+<nav>
+
+ <a
+    href="{% url 'student-dashboard' %}"
+    class="nav-link {% if request.resolver_match.url_name == 'student-dashboard' %}active{% endif %}"
+>
+    🏠 Dashboard
+</a>
+<a
+    href="{% url 'student-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'student-list add-student student-detail edit-student delete-student' %}active{% endif %}"
+>
+    👨‍🎓 Students
+</a>
+
+  
+<a href="{% url 'faculty-list' %}"
+   class="nav-link {% if request.resolver_match.url_name == 'faculty-list' %}active{% endif %}">
+    👨‍🏫 Faculty
+</a>
+
+
+   <a href="{% url 'attendance' %}"
+   class="nav-link {% if request.resolver_match.url_name == 'attendance' %}active{% endif %}">
+    📅 Attendance
+</a>
+
+
+<a
+    href="/students/results/"
+    class="nav-link {% if '/students/results/' in request.path %}active{% endif %}"
+>
+    📝 Results
+</a>
+
+
+    <a
+    href="{% url 'assignment-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'assignment-list add-assignment edit-assignment delete-assignment' %}active{% endif %}"
+>
+    📚 Assignments
+</a>
+
+
+    <a
+    href="{% url 'fee-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'fee-list add-fee edit-fee delete-fee' %}active{% endif %}"
+>
+    💰 Fees
+</a>
+
+    <a
+    href="{% url 'notice-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'notice-list add-notice edit-notice delete-notice' %}active{% endif %}"
+>
+    📢 Notices
+</a>
+
+
+ <a href="{% url 'settings' %}"
+   class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+    ⚙️ Settings
+</a>
+
+    <div class="sidebar-divider"></div>
+
+
+    <a
+    href="{% url 'event-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'event-list add-event edit-event delete-event' %}active{% endif %}"
+>
+    📅 Events
+</a>
+
+<a
+    href="{% url 'book-list' %}"
+    class="nav-link {% if request.resolver_match.url_name in 'book-list add-book edit-book delete-book book-issue-list issue-book return-book' %}active{% endif %}"
+>
+    📚 Library
+</a>
+
+  <a
+    href="{% url 'reports' %}"
+    class="nav-link {% if request.resolver_match.url_name == 'reports' %}active{% endif %}"
+>
+    📊 Reports
+</a>
+
+</nav>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

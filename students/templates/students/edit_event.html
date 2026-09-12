@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Event | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Edit Event</h1>
+        <p>Update campus event information.</p>
+    </div>
+
+    <a href="{% url 'event-list' %}" class="secondary-btn">
+        Back to Events
+    </a>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Event Details</h2>
+            <p>Update the event information below.</p>
+        </div>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Event Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ event.title }}"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Event Type</label>
+
+                <select name="event_type" required>
+
+                    <option value="Seminar" {% if event.event_type == "Seminar" %}selected{% endif %}>
+                        Seminar
+                    </option>
+
+                    <option value="Workshop" {% if event.event_type == "Workshop" %}selected{% endif %}>
+                        Workshop
+                    </option>
+
+                    <option value="Cultural" {% if event.event_type == "Cultural" %}selected{% endif %}>
+                        Cultural
+                    </option>
+
+                    <option value="Sports" {% if event.event_type == "Sports" %}selected{% endif %}>
+                        Sports
+                    </option>
+
+                    <option value="Meeting" {% if event.event_type == "Meeting" %}selected{% endif %}>
+                        Meeting
+                    </option>
+
+                    <option value="Other" {% if event.event_type == "Other" %}selected{% endif %}>
+                        Other
+                    </option>
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Date</label>
+
+                <input
+                    type="date"
+                    name="date"
+                    value="{{ event.date|date:'Y-m-d' }}"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Time</label>
+
+                <input
+                    type="time"
+                    name="time"
+                    value="{{ event.time|time:'H:i' }}"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Venue</label>
+
+                <input
+                    type="text"
+                    name="venue"
+                    value="{{ event.venue }}"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>Organizer</label>
+
+                <input
+                    type="text"
+                    name="organizer"
+                    value="{{ event.organizer }}"
+                    required
+                >
+            </div>
+
+
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    rows="6"
+                    required
+                >{{ event.description }}</textarea>
+            </div>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 25px;">
+
+            <a
+                href="{% url 'event-list' %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

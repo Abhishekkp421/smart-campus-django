@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}
+Students | Smart Campus
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Students</h1>
+        <p>Manage and search student records.</p>
+    </div>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by ID, name, email or phone..."
+            value="{{ search_query }}"
+        >
+
+        <select name="department">
+
+            <option value="">All Departments</option>
+
+            {% for department in departments %}
+
+            <option
+                value="{{ department.id }}"
+                {% if department_filter == department.id|stringformat:"s" %}
+                    selected
+                {% endif %}
+            >
+                {{ department.code }} - {{ department.name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <select name="course">
+
+            <option value="">All Courses</option>
+
+            {% for course in courses %}
+
+            <option
+                value="{{ course.id }}"
+                {% if course_filter == course.id|stringformat:"s" %}
+                    selected
+                {% endif %}
+            >
+                {{ course.code }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <button type="submit" class="primary-btn">
+            Search
+        </button>
+
+
+        <a
+            href="{% url 'student-list' %}"
+            class="secondary-btn"
+        >
+            Reset
+        </a>
+
+    </form>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Student Records</h2>
+
+            <p>
+                Showing
+                {{ page_obj.paginator.count }}
+                student{{ page_obj.paginator.count|pluralize }}.
+            </p>
+        </div>
+
+
+        <a
+            href="{% url 'add-student' %}"
+            class="primary-btn"
+        >
+            + Add Student
+        </a>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for student in page_obj %}
+
+                <tr>
+
+                    <td>
+                        {{ student.student_id }}
+                    </td>
+
+
+                    <td>
+                        {{ student.name }}
+                    </td>
+
+
+                    <td>
+                        {{ student.email }}
+                    </td>
+
+
+                    <td>
+                        {{ student.course.code }}
+                    </td>
+
+
+                    <td>
+                        {{ student.semester.name }}
+                    </td>
+
+
+                    <td>
+                        {{ student.department.code }}
+                    </td>
+
+
+                    <td class="actions">
+
+                        <a
+                            href="{% url 'student-detail' student.id %}"
+                            class="action-btn view-btn"
+                        >
+                            View
+                        </a>
+
+
+                        <a
+                            href="{% url 'edit-student' student.id %}"
+                            class="action-btn edit-btn"
+                        >
+                            Edit
+                        </a>
+
+
+                        <a
+                            href="{% url 'delete-student' student.id %}"
+                            class="action-btn delete-btn"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="empty-state"
+                    >
+                        No students found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- Pagination -->
+
+    {% if page_obj.has_other_pages %}
+
+    <div class="pagination">
+
+        {% if page_obj.has_previous %}
+
+        <a
+            href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&department={{ department_filter }}&course={{ course_filter }}"
+        >
+            ← Previous
+        </a>
+
+        {% endif %}
+
+
+        <span>
+
+            Page
+            {{ page_obj.number }}
+            of
+            {{ page_obj.paginator.num_pages }}
+
+        </span>
+
+
+        {% if page_obj.has_next %}
+
+        <a
+            href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&department={{ department_filter }}&course={{ course_filter }}"
+        >
+            Next →
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
