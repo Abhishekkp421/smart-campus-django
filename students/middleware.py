@@ -1,3 +1,4 @@
+from django.urls import resolve, Resolver404
 from django.shortcuts import redirect
 import re
 
@@ -31,6 +32,15 @@ class LoginRequiredMiddleware:
             return redirect(
                 f"/students/login/?next={path}"
             )
+
+        # =========================
+        # LET DJANGO HANDLE 404
+        # =========================
+
+        try:
+            resolve(path)
+        except Resolver404:
+            return self.get_response(request)
 
         # =========================
         # ADMIN

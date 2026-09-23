@@ -13,6 +13,7 @@ __pycache__/
 
 # Django
 db.sqlite3
+staticfiles/
 
 # Media uploads
 media/
@@ -32,3 +33,8 @@ celerybeat.pid
 # OS
 .DS_Store
 Thumbs.db
+# Local database backups
+backups/
+
+# Celery Beat temporary files
+celerybeat-schedule-*
