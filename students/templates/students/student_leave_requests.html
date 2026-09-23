@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}My Leaves | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>My Leave Requests</h1>
+        <p>View your leave applications and their status.</p>
+    </div>
+
+    <div>
+        <a href="{% url 'apply-leave' %}" class="primary-btn">
+            + Apply Leave
+        </a>
+    </div>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Leave History</h2>
+            <p>Your submitted leave requests.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Applied At</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for leave in leave_requests %}
+
+                <tr>
+
+                    <td>{{ leave.leave_type }}</td>
+
+                    <td>
+                        {{ leave.start_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ leave.end_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ leave.reason }}
+                    </td>
+
+                    <td>
+                        {% if leave.status == "Approved" %}
+                            <span class="status-badge success">
+                                ✅ Approved
+                            </span>
+                        {% elif leave.status == "Rejected" %}
+                            <span class="status-badge">
+                                ❌ Rejected
+                            </span>
+                        {% else %}
+                            <span class="status-badge">
+                                🟡 Pending
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ leave.applied_at|date:"d M Y, h:i A" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No leave requests found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

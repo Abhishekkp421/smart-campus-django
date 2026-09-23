@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Faculty Reports | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Faculty Reports</h1>
+
+        <p>
+            View your academic and attendance reports.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Summary Cards -->
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            👨‍🎓
+        </div>
+
+        <div>
+
+            <div class="stat-value">
+                {{ total_students }}
+            </div>
+
+            <div class="stat-label">
+                Students
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📅
+        </div>
+
+        <div>
+
+            <div class="stat-value">
+                {{ total_attendance }}
+            </div>
+
+            <div class="stat-label">
+                Attendance Records
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📚
+        </div>
+
+        <div>
+
+            <div class="stat-value">
+                {{ total_assignments }}
+            </div>
+
+            <div class="stat-label">
+                Assignments
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📊
+        </div>
+
+        <div>
+
+            <div class="stat-value">
+                {{ attendance_percentage }}%
+            </div>
+
+            <div class="stat-label">
+                Attendance
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Attendance Overview -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Attendance Overview</h2>
+
+            <p>
+                Overall attendance recorded by you.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Total Records</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Percentage</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        {{ total_attendance }}
+                    </td>
+
+                    <td>
+                        {{ present_attendance }}
+                    </td>
+
+                    <td>
+                        {{ absent_attendance }}
+                    </td>
+
+                    <td>
+                        {{ attendance_percentage }}%
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Subject-wise Attendance -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Subject-wise Attendance</h2>
+
+            <p>
+                Attendance statistics for your subjects.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject</th>
+                    <th>Total</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Percentage</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in subject_attendance %}
+
+                <tr>
+
+                    <td>
+                        {{ item.subject.code }}
+                        -
+                        {{ item.subject.name }}
+                    </td>
+
+                    <td>
+                        {{ item.total }}
+                    </td>
+
+                    <td>
+                        {{ item.present }}
+                    </td>
+
+                    <td>
+                        {{ item.absent }}
+                    </td>
+
+                    <td>
+                        {{ item.percentage }}%
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" style="text-align:center;">
+                        No attendance records found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

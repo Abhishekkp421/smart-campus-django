@@ -2,6 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from . import views
 
+
 from .api_views import (
     StudentListCreateAPIView,
     StudentDetailAPIView,
@@ -36,11 +37,75 @@ urlpatterns = [
 
     path("add/", views.add_student, name="add-student"),
     path("attendance/", views.attendance, name="attendance"),
+    path(
+    "faculty-attendance/",
+    views.faculty_attendance,
+    name="faculty-attendance"
+),
+path(
+    "faculty-results/",
+    views.faculty_results,
+    name="faculty-results"
+),
+path(
+    "faculty-assignments/",
+    views.faculty_assignments,
+    name="faculty-assignments"
+),
+
+path(
+    "faculty-assignments/edit/<int:assignment_id>/",
+    views.faculty_edit_assignment,
+    name="faculty-edit-assignment"
+),
+
+path(
+    "faculty-assignments/delete/<int:assignment_id>/",
+    views.faculty_delete_assignment,
+    name="faculty-delete-assignment"
+),
+path(
+    "faculty-notices/",
+    views.faculty_notices,
+    name="faculty-notices"
+),
+
+path(
+    "faculty-notices/edit/<int:notice_id>/",
+    views.faculty_edit_notice,
+    name="faculty-edit-notice"
+),
+
+path(
+    "faculty-notices/delete/<int:notice_id>/",
+    views.faculty_delete_notice,
+    name="faculty-delete-notice"
+),
+path(
+    "faculty-settings/",
+    views.faculty_settings,
+    name="faculty-settings"
+),
+path(
+    "faculty-change-password/",
+    views.faculty_change_password,
+    name="faculty-change-password"
+),
+    path(
+    "my-attendance/",
+    views.my_attendance,
+    name="my-attendance"
+),
     path("assignments/", views.assignment_list, name="assignment-list"),
     path("assignments/add/", views.add_assignment, name="add-assignment"),
     path("assignments/<int:assignment_id>/edit/", views.edit_assignment, name="edit-assignment"),
     path("assignments/<int:assignment_id>/delete/", views.delete_assignment, name="delete-assignment"),
     path("results/", views.result_list, name="result-list"),
+    path(
+    "my-results/",
+    views.my_results,
+    name="my-results"
+ ),
     path("results/add/", views.add_result, name="add-result"),
     path("results/marksheet/", views.marksheet_list, name="marksheet-list"),
     path("results/<int:result_id>/edit/", views.edit_result, name="edit-result"),
@@ -53,6 +118,79 @@ urlpatterns = [
     path("faculty/", views.faculty_list, name="faculty-list"),
     path("faculty/add/", views.add_faculty, name="add-faculty"),
     path("fees/", views.fee_list, name="fee-list"),
+    path(
+    "my-fees/",
+    views.my_fees,
+    name="my-fees"
+  ),
+  path(
+    "my-assignments/",
+    views.my_assignments,
+    name="my-assignments"
+),
+path(
+    "my-notices/",
+    views.my_notices,
+    name="my-notices"
+),
+path(
+    "my-events/",
+    views.my_events,
+    name="my-events"
+),
+path(
+    "my-library/",
+    views.my_library,
+    name="my-library"
+),
+path(
+    "student-settings/",
+    views.student_settings,
+    name="student-settings"
+),
+path(
+    "student-change-password/",
+    views.student_change_password,
+    name="student-change-password"
+),
+path(
+    "faculty-events/",
+    views.faculty_events,
+    name="faculty-events"
+),
+
+path(
+    "faculty-events/add/",
+    views.faculty_add_event,
+    name="faculty-add-event"
+),
+
+path(
+    "faculty-events/<int:event_id>/edit/",
+    views.faculty_edit_event,
+    name="faculty-edit-event"
+),
+
+path(
+    "faculty-events/<int:event_id>/delete/",
+    views.faculty_delete_event,
+    name="faculty-delete-event"
+),
+path(
+    "faculty-reports/",
+    views.faculty_reports,
+    name="faculty-reports"
+),
+path(
+    "faculty-subject-mapping/",
+    views.faculty_subject_mapping,
+    name="faculty-subject-mapping"
+),
+path(
+    "assignments/<int:assignment_id>/submit/",
+    views.submit_assignment,
+    name="submit-assignment"
+),
     path("fees/<int:fee_id>/edit/", views.edit_fee, name="edit-fee"),
     path("fees/<int:fee_id>/delete/", views.delete_fee, name="delete-fee"),
     path("fees/add/", views.add_fee, name="add-fee"),
@@ -208,5 +346,62 @@ path(
     "api/students/<int:student_id>/",
     views.student_detail_api,
     name="student-detail-api"
+),
+path(
+    "faculty-assignments/<int:assignment_id>/submissions/",
+    views.faculty_assignment_submissions,
+    name="faculty-assignment-submissions"
+),
+path(
+    "notifications/",
+    views.notifications,
+    name="notifications"
+),
+path(
+    "notifications/<int:notification_id>/read/",
+    views.mark_notification_read,
+    name="mark-notification-read"
+),
+path(
+    "my-timetable/",
+    views.my_timetable,
+    name="my-timetable"
+),
+path(
+    "faculty-timetable/",
+    views.faculty_timetable,
+    name="faculty-timetable"
+),
+path(
+    "my-leaves/",
+    views.student_leave_requests,
+    name="student-leave-requests"
+),
+
+path(
+    "apply-leave/",
+    views.apply_leave,
+    name="apply-leave"
+),
+path(
+    "faculty-leaves/",
+    views.faculty_leave_requests,
+    name="faculty-leave-requests"
+),
+path(
+    "my-complaints/",
+    views.student_complaints,
+    name="student-complaints"
+),
+
+path(
+    "create-complaint/",
+    views.create_complaint,
+    name="create-complaint"
+),
+path(
+    "admin-complaints/",
+    views.admin_complaints,
+    name="admin-complaints"
 ),
 ]

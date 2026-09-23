@@ -15,6 +15,9 @@ from .models import (
     Event,
     Book,
     BookIssue,
+    Timetable,
+    LeaveRequest,
+    Complaint,
 
 )
 
@@ -323,4 +326,96 @@ class BookIssueAdmin(admin.ModelAdmin):
         "status",
         "issue_date",
         "due_date",
+    )
+@admin.register(Timetable)
+class TimetableAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "day",
+        "start_time",
+        "end_time",
+        "subject",
+        "faculty",
+        "course",
+        "semester",
+        "room",
+    )
+
+    list_filter = (
+        "day",
+        "course",
+        "semester",
+        "faculty",
+    )
+
+    search_fields = (
+        "subject__name",
+        "subject__code",
+        "faculty__name",
+        "room",
+    )
+
+    ordering = (
+        "day",
+        "start_time",
+    )
+@admin.register(LeaveRequest)
+class LeaveRequestAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "student",
+        "leave_type",
+        "start_date",
+        "end_date",
+        "status",
+        "applied_at",
+        "reviewed_by",
+    )
+
+    list_filter = (
+        "status",
+        "leave_type",
+        "start_date",
+        "end_date",
+    )
+
+    search_fields = (
+        "student__name",
+        "student__student_id",
+        "leave_type",
+        "reason",
+    )
+
+    ordering = (
+        "-applied_at",
+    )
+@admin.register(Complaint)
+class ComplaintAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "student",
+        "title",
+        "category",
+        "priority",
+        "status",
+        "created_at",
+        "updated_at",
+    )
+
+    list_filter = (
+        "status",
+        "priority",
+        "category",
+    )
+
+    search_fields = (
+        "student__name",
+        "student__student_id",
+        "title",
+        "category",
+        "description",
+    )
+
+    ordering = (
+        "-created_at",
     )

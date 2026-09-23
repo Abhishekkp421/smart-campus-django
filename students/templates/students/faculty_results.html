@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Faculty Results</h1>
+        <p>Enter and manage student results for your subjects.</p>
+    </div>
+
+</div>
+
+
+<!-- Faculty Information -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Faculty Information</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Faculty ID</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.employee_id }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Faculty Name</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.name }}"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Result Selection -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Enter Results</h2>
+
+        <p>
+            Select the exam, subject and maximum marks.
+        </p>
+
+
+        {% if error %}
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="get">
+
+            <div class="form-grid">
+
+                <!-- Exam -->
+
+                <div class="form-group">
+
+                    <label for="exam">
+                        Exam
+                    </label>
+
+                    <select
+                        id="exam"
+                        name="exam"
+                        required
+                    >
+
+                        <option value="">
+                            Select Exam
+                        </option>
+
+                        {% for exam in exams %}
+
+                            <option
+                                value="{{ exam.id }}"
+                                {% if selected_exam == exam.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ exam.name }}
+                                - {{ exam.course.code }}
+                                - {{ exam.semester }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Subject -->
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <select
+                        id="subject"
+                        name="subject"
+                        required
+                    >
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+                        {% for subject in subjects %}
+
+                            <option
+                                value="{{ subject.id }}"
+                                {% if selected_subject == subject.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ subject.code }}
+                                - {{ subject.name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Maximum Marks -->
+
+                <div class="form-group">
+
+                    <label for="max_marks">
+                        Maximum Marks
+                    </label>
+
+                    <input
+                        type="number"
+                        id="max_marks"
+                        name="max_marks"
+                        value="{{ max_marks }}"
+                        min="1"
+                        step="0.01"
+                        placeholder="e.g. 100"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Load Students
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- Student Results -->
+
+{% if students %}
+
+    <div class="form-card">
+
+        <div class="form-section">
+
+            <h2>Student Results</h2>
+
+            <p>
+                Enter marks obtained by each student.
+            </p>
+
+
+            <form method="post">
+
+                {% csrf_token %}
+
+
+                <input
+                    type="hidden"
+                    name="exam"
+                    value="{{ selected_exam }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="subject"
+                    value="{{ selected_subject }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="max_marks"
+                    value="{{ max_marks }}"
+                >
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Student ID
+                                </th>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Course
+                                </th>
+
+                                <th>
+                                    Semester
+                                </th>
+
+                                <th>
+                                    Marks Obtained
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for student in students %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ student.student_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ student.name }}
+                                    </td>
+
+                                    <td>
+                                        {{ student.course.code }}
+                                    </td>
+
+                                    <td>
+                                        {{ student.semester }}
+                                    </td>
+
+                                    <td>
+
+                                        <input
+                                            type="number"
+                                            name="marks_{{ student.id }}"
+                                            value="{{ student.result_marks }}"
+                                            min="0"
+                                            max="{{ max_marks }}"
+                                            step="0.01"
+                                            placeholder="Enter marks"
+                                        >
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Results
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

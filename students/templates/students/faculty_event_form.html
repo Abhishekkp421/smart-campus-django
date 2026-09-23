@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{% if event %}
+Edit Event
+{% else %}
+Add Event
+{% endif %}
+
+| Smart Campus
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+
+            {% if event %}
+                Edit Event
+            {% else %}
+                Add Event
+            {% endif %}
+
+        </h1>
+
+        <p>
+            {% if event %}
+                Update your event details.
+            {% else %}
+                Create a new campus event.
+            {% endif %}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Event Information</h2>
+
+            <p>
+                Enter the event details below.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-container">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Event Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ event.title|default:'' }}"
+                        placeholder="Enter event title"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Event Type
+                    </label>
+
+                    <input
+                        type="text"
+                        name="event_type"
+                        value="{{ event.event_type|default:'' }}"
+                        placeholder="Workshop / Seminar / Sports"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date"
+                        value="{{ event.date|date:'Y-m-d' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Time
+                    </label>
+
+                    <input
+                        type="time"
+                        name="time"
+                        value="{{ event.time|time:'H:i' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Venue
+                    </label>
+
+                    <input
+                        type="text"
+                        name="venue"
+                        value="{{ event.venue|default:'' }}"
+                        placeholder="Enter venue"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        rows="5"
+                        placeholder="Enter event description"
+                        required
+                    >{{ event.description|default:'' }}</textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+
+                    {% if event %}
+                        Update Event
+                    {% else %}
+                        Create Event
+                    {% endif %}
+
+                </button>
+
+
+                <a
+                    href="{% url 'faculty-events' %}"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

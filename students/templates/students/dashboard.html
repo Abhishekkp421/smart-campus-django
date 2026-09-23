@@ -7,76 +7,401 @@ Dashboard | Smart Campus
 
 {% block content %}
 
+
+{% if user_role == "Student" %}
+
+<!-- ================= STUDENT DASHBOARD ================= -->
+
 <div class="page-header">
 
     <div>
         <h1>Dashboard</h1>
-        <p>Welcome back, Admin. Here's what's happening today.</p>
+
+        <p>
+            Welcome back, {{ student.name }}. Here's your academic overview.
+        </p>
     </div>
 
 </div>
 
 
-<!-- Statistics Cards -->
+<!-- Student Information Cards -->
 
 <div class="stats-grid">
 
     <div class="stat-card">
-        <div class="stat-icon">👨‍🎓</div>
+
+        <div class="stat-icon">🎓</div>
 
         <div>
-            <p>Total Students</p>
-            <h2>{{ total_students }}</h2>
+            <p>Student ID</p>
+            <h2>{{ student.student_id }}</h2>
         </div>
+
     </div>
 
 
     <div class="stat-card">
-        <div class="stat-icon">👨‍🏫</div>
 
-        <div>
-            <p>Total Faculty</p>
-            <h2>{{ total_faculty }}</h2>
-        </div>
-    </div>
-
-
-    <div class="stat-card">
         <div class="stat-icon">📚</div>
 
         <div>
-            <p>Total Courses</p>
-            <h2>{{ total_courses }}</h2>
+            <p>Course</p>
+            <h2>{{ student.course.code }}</h2>
         </div>
+
     </div>
 
 
     <div class="stat-card">
-        <div class="stat-icon">📅</div>
+
+        <div class="stat-icon">📖</div>
 
         <div>
-            <p>Attendance</p>
-            <h2>N/A</h2>
+            <p>Semester</p>
+            <h2>{{ student.semester.name }}</h2>
         </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🏫</div>
+
+        <div>
+            <p>Department</p>
+            <h2>{{ student.department.code }}</h2>
+        </div>
+
     </div>
 
 </div>
 
 
-<!-- Recent Students -->
+<!-- Student Profile -->
 
 <div class="dashboard-section">
 
     <div class="section-header">
 
         <div>
-            <h2>Recent Students</h2>
-            <p>Recently added students.</p>
+            <h2>My Profile</h2>
+
+            <p>
+                Your registered student information.
+            </p>
         </div>
 
-        <a href="{% url 'add-student' %}" class="primary-btn">
-           + Add Student
-        </a>
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <th>Student ID</th>
+                    <td>{{ student.student_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Name</th>
+                    <td>{{ student.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ student.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ student.phone }}</td>
+                </tr>
+
+                <tr>
+                    <th>Course</th>
+                    <td>
+                        {{ student.course.code }} -
+                        {{ student.course.name }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Semester</th>
+                    <td>{{ student.semester.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Department</th>
+                    <td>
+                        {{ student.department.code }} -
+                        {{ student.department.name }}
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% elif user_role == "Faculty" %}
+
+<!-- ================= FACULTY DASHBOARD ================= -->
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Dashboard</h1>
+
+        <p>
+            Welcome back, {{ faculty.name }}. Here's your faculty overview.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Faculty Information Cards -->
+
+<div class="stats-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🆔</div>
+
+        <div>
+
+            <p>Faculty ID</p>
+
+            <h2>{{ faculty.employee_id }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">👨‍🏫</div>
+
+        <div>
+
+            <p>Designation</p>
+
+            <h2>{{ faculty.designation }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🏫</div>
+
+        <div>
+
+            <p>Department</p>
+
+            <h2>{{ faculty.department.code }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📚</div>
+
+        <div>
+
+            <p>My Assignments</p>
+
+            <h2>{{ total_my_assignments }}</h2>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- Faculty Profile -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Profile</h2>
+
+            <p>
+                Your registered faculty information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <th>Faculty ID</th>
+
+                    <td>
+                        {{ faculty.employee_id }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Name</th>
+
+                    <td>
+                        {{ faculty.name }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Email</th>
+
+                    <td>
+                        {{ faculty.email }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Phone</th>
+
+                    <td>
+                        {{ faculty.phone }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Department</th>
+
+                    <td>
+                        {{ faculty.department.code }} -
+                        {{ faculty.department.name }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Designation</th>
+
+                    <td>
+                        {{ faculty.designation }}
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Faculty Activity -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Activity</h2>
+
+            <p>
+                Overview of your academic activities.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📅</div>
+
+            <div>
+
+                <p>Attendance Records</p>
+
+                <h2>
+                    {{ total_attendance_records }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📚</div>
+
+            <div>
+
+                <p>Assignments</p>
+
+                <h2>
+                    {{ total_my_assignments }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Recent Assignments -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Recent Assignments</h2>
+
+            <p>
+                Recently created assignments by you.
+            </p>
+
+        </div>
 
     </div>
 
@@ -88,12 +413,15 @@ Dashboard | Smart Campus
             <thead>
 
                 <tr>
-                    <th>Student ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Course</th>
-                    <th>Semester</th>
-                    <th>Department</th>
+
+                    <th>Title</th>
+
+                    <th>Subject</th>
+
+                    <th>Due Date</th>
+
+                    <th>Max Marks</th>
+
                 </tr>
 
             </thead>
@@ -101,30 +429,40 @@ Dashboard | Smart Campus
 
             <tbody>
 
-                {% for student in recent_students %}
+                {% for assignment in recent_assignments %}
 
                 <tr>
 
-                    <td>{{ student.student_id }}</td>
+                    <td>
+                        {{ assignment.title }}
+                    </td>
 
-                    <td>{{ student.name }}</td>
+                    <td>
+                        {{ assignment.subject.code }} -
+                        {{ assignment.subject.name }}
+                    </td>
 
-                    <td>{{ student.email }}</td>
+                    <td>
+                        {{ assignment.due_date }}
+                    </td>
 
-                    <td>{{ student.course.code }}</td>
-
-                    <td>{{ student.semester.name }}</td>
-
-                    <td>{{ student.department.code }}</td>
+                    <td>
+                        {{ assignment.max_marks }}
+                    </td>
 
                 </tr>
+
 
                 {% empty %}
 
                 <tr>
-                    <td colspan="6" class="empty-state">
-                        No students available yet.
+
+                    <td colspan="4" class="empty-state">
+
+                        No assignments created yet.
+
                     </td>
+
                 </tr>
 
                 {% endfor %}
@@ -137,5 +475,198 @@ Dashboard | Smart Campus
 
 </div>
 
+
+{% else %}
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Dashboard</h1>
+
+        <p>
+            Welcome back, {{ user_role }}. Here's what's happening today.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Statistics Cards -->
+
+<div class="stats-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">👨‍🎓</div>
+
+        <div>
+
+            <p>Total Students</p>
+
+            <h2>{{ total_students }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">👨‍🏫</div>
+
+        <div>
+
+            <p>Total Faculty</p>
+
+            <h2>{{ total_faculty }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📚</div>
+
+        <div>
+
+            <p>Total Courses</p>
+
+            <h2>{{ total_courses }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📅</div>
+
+        <div>
+
+            <p>Attendance</p>
+
+            <h2>N/A</h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Recent Students -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Recent Students</h2>
+
+            <p>
+                Recently added students.
+            </p>
+
+        </div>
+
+
+        <a href="{% url 'add-student' %}" class="primary-btn">
+            + Add Student
+        </a>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Course</th>
+
+                    <th>Semester</th>
+
+                    <th>Department</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for student in recent_students %}
+
+                <tr>
+
+                    <td>
+                        {{ student.student_id }}
+                    </td>
+
+                    <td>
+                        {{ student.name }}
+                    </td>
+
+                    <td>
+                        {{ student.email }}
+                    </td>
+
+                    <td>
+                        {{ student.course.code }}
+                    </td>
+
+                    <td>
+                        {{ student.semester.name }}
+                    </td>
+
+                    <td>
+                        {{ student.department.code }}
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+
+                        No students available yet.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% endif %}
 
 {% endblock %}

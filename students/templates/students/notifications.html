@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}
+Notifications | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Notifications</h1>
+        <p>
+            Your latest notifications.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>All Notifications</h2>
+            <p>
+                Stay updated with important activities.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for notification in notifications %}
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            {{ notification.title }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ notification.message }}
+                    </td>
+
+                   <td>
+
+    {% if notification.is_read %}
+
+        <span class="status-badge">
+            Read
+        </span>
+
+    {% else %}
+
+        <form
+    method="POST"
+    action="{% url 'mark-notification-read' notification.id %}"
+    style="display: inline;"
+>
+    {% csrf_token %}
+
+    <button
+        type="submit"
+        class="status-badge success"
+        style="border: none; cursor: pointer;"
+    >
+        🔵 Unread
+    </button>
+</form>
+    {% endif %}
+
+</td>
+
+                    <td>
+                        {{ notification.created_at|date:"d M Y, h:i A" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        class="empty-state"
+                    >
+                        No notifications available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

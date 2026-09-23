@@ -133,6 +133,13 @@
                        <a href="{% url 'edit-faculty' faculty.id %}" class="action-btn edit-btn">
     Edit
 </a>
+<a
+    href="{% url 'faculty-subject-mapping' %}?faculty={{ faculty.id }}"
+    class="action-btn"
+    style="background: #ede9fe;"
+>
+    🔗 Subjects
+</a>
 
                         <a href="{% url 'delete-faculty' faculty.id %}" class="action-btn delete-btn">
     Delete

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Assignments | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>My Assignments</h1>
+        <p>
+            Assignments for {{ student.name }}.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Assignment List</h2>
+            <p>
+                Assignments related to your course and semester.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th>Due Date</th>
+                    <th>Max Marks</th>
+                    <th>Submission</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for assignment in assignments %}
+
+                <tr>
+
+                    <td>
+                        {{ assignment.title }}
+                    </td>
+
+                    <td>
+                        {{ assignment.subject.code }} -
+                        {{ assignment.subject.name }}
+                    </td>
+
+                    <td>
+                        {% if assignment.faculty %}
+                            {{ assignment.faculty.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ assignment.due_date }}
+                    </td>
+
+                    <td>
+                        {{ assignment.max_marks }}
+                    </td>
+
+                    <td>
+
+                        {% if assignment.student_submission %}
+
+                            <span class="status-badge success">
+                                ✅ Submitted
+                            </span>
+
+                            {% if assignment.student_submission.marks_obtained is not None %}
+
+                                <div style="margin-top: 6px;">
+                                    Marks:
+                                    {{ assignment.student_submission.marks_obtained }}/{{ assignment.max_marks }}
+                                </div>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'submit-assignment' assignment.id %}"
+                                class="action-btn"
+                            >
+                                📤 Submit
+                            </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+                        No assignments available for your course and semester.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

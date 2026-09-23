@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}My Timetable | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>My Timetable</h1>
+        <p>Class schedule for {{ student.name }}.</p>
+    </div>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Class Schedule</h2>
+            <p>{{ student.course }} — {{ student.semester }}</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th>Room</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for entry in timetable %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ entry.day }}</strong>
+                    </td>
+
+                    <td>
+                        {{ entry.start_time|time:"h:i A" }}
+                        -
+                        {{ entry.end_time|time:"h:i A" }}
+                    </td>
+
+                    <td>
+                        {{ entry.subject.code }}
+                        -
+                        {{ entry.subject.name }}
+                    </td>
+
+                    <td>
+                        {% if entry.faculty %}
+                            {{ entry.faculty.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if entry.room %}
+                            {{ entry.room }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        No timetable available for your course and semester.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

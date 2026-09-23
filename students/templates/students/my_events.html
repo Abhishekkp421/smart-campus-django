@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Events | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>My Events</h1>
+
+        <p>
+            Upcoming events and activities from Smart Campus.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Event List</h2>
+
+            <p>
+                View upcoming campus events and activities.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Venue</th>
+                    <th>Organizer</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for event in events %}
+
+                <tr>
+
+                    <td>
+                        {{ event.title }}
+                    </td>
+
+                    <td>
+                        {{ event.event_type }}
+                    </td>
+
+                    <td>
+                        {{ event.date|date:"M. d, Y" }}
+                    </td>
+
+                    <td>
+                        {{ event.time|time:"h:i A" }}
+                    </td>
+
+                    <td>
+                        {{ event.venue }}
+                    </td>
+
+                    <td>
+                        {{ event.organizer }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+                        No events available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

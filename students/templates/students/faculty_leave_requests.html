@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Leave Requests | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Leave Requests</h1>
+        <p>Review leave applications from students.</p>
+    </div>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Student Leave Requests</h2>
+            <p>Review and manage pending leave applications.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Student ID</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for leave in leave_requests %}
+
+                <tr>
+
+                    <td>
+                        {{ leave.student.name }}
+                    </td>
+
+                    <td>
+                        {{ leave.student.student_id }}
+                    </td>
+
+                    <td>
+                        {{ leave.leave_type }}
+                    </td>
+
+                    <td>
+                        {{ leave.start_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ leave.end_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ leave.reason }}
+                    </td>
+
+                    <td>
+
+                        {% if leave.status == "Approved" %}
+
+                            <span class="status-badge success">
+                                ✅ Approved
+                            </span>
+
+                        {% elif leave.status == "Rejected" %}
+
+                            <span class="status-badge">
+                                ❌ Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge">
+                                🟡 Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if leave.status == "Pending" %}
+
+                            <form method="post">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="leave_id"
+                                    value="{{ leave.id }}"
+                                >
+
+                                <button
+                                    type="submit"
+                                    name="action"
+                                    value="approve"
+                                    class="primary-btn"
+                                >
+                                    ✅ Approve
+                                </button>
+
+                               <button
+    type="submit"
+    name="action"
+    value="reject"
+    class="danger-btn"
+    style="margin-left: 6px; padding: 10px 16px; font-size: 14px; border-radius: 6px; cursor: pointer;"
+>
+    ❌ Reject
+</button>
+
+                            </form>
+
+                        {% else %}
+
+                            <span>
+                                Reviewed
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="8" class="empty-state">
+                        No leave requests available.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

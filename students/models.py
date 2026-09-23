@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Department(models.Model):
@@ -36,6 +37,15 @@ class Semester(models.Model):
 
 class Faculty(models.Model):
     employee_id = models.CharField(max_length=20, unique=True)
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="faculty_profile"
+    )
+
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
@@ -49,12 +59,24 @@ class Faculty(models.Model):
 
     designation = models.CharField(max_length=100)
 
+    subjects = models.ManyToManyField(
+        "Subject",
+        blank=True,
+        related_name="faculty_members"
+    )
+
     def __str__(self):
         return f"{self.employee_id} - {self.name}"
 
-
 class Student(models.Model):
     student_id = models.CharField(max_length=20, unique=True)
+    user = models.OneToOneField(
+    User,
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name="student_profile"
+   )
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
@@ -186,6 +208,272 @@ class Assignment(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.subject.code}"
+class Timetable(models.Model):
+
+    DAY_CHOICES = [
+        ("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+        ("Saturday", "Saturday"),
+    ]
+
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        related_name="timetable_entries"
+    )
+
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="timetable_entries"
+    )
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="timetable_entries"
+    )
+
+    semester = models.ForeignKey(
+        Semester,
+        on_delete=models.CASCADE,
+        related_name="timetable_entries"
+    )
+
+    day = models.CharField(
+        max_length=20,
+        choices=DAY_CHOICES
+    )
+
+    start_time = models.TimeField()
+
+    end_time = models.TimeField()
+
+    room = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["day", "start_time"]
+
+    def __str__(self):
+        return (
+            f"{self.day} - "
+            f"{self.subject.code} "
+            f"({self.start_time} - {self.end_time})"
+        )
+class LeaveRequest(models.Model):
+
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Approved", "Approved"),
+        ("Rejected", "Rejected"),
+    ]
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="leave_requests"
+    )
+
+    leave_type = models.CharField(
+        max_length=50
+    )
+
+    start_date = models.DateField()
+
+    end_date = models.DateField()
+
+    reason = models.TextField()
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Pending"
+    )
+
+    applied_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    reviewed_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    reviewed_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="reviewed_leave_requests"
+    )
+
+    class Meta:
+        ordering = ["-applied_at"]
+
+    def __str__(self):
+        return (
+            f"{self.student.name} - "
+            f"{self.leave_type} - "
+            f"{self.status}"
+        )
+class Complaint(models.Model):
+
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("In Progress", "In Progress"),
+        ("Resolved", "Resolved"),
+        ("Rejected", "Rejected"),
+    ]
+
+    PRIORITY_CHOICES = [
+        ("Low", "Low"),
+        ("Medium", "Medium"),
+        ("High", "High"),
+    ]
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="complaints"
+    )
+
+    title = models.CharField(
+        max_length=150
+    )
+
+    category = models.CharField(
+        max_length=100
+    )
+
+    description = models.TextField()
+
+    priority = models.CharField(
+        max_length=20,
+        choices=PRIORITY_CHOICES,
+        default="Medium"
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Pending"
+    )
+
+    admin_response = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    resolved_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.student.name} - {self.title}"
+class AssignmentSubmission(models.Model):
+
+    STATUS_CHOICES = [
+        ("Submitted", "Submitted"),
+        ("Evaluated", "Evaluated"),
+    ]
+
+    assignment = models.ForeignKey(
+        Assignment,
+        on_delete=models.CASCADE,
+        related_name="submissions"
+    )
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="assignment_submissions"
+    )
+
+    submission_file = models.FileField(
+        upload_to="assignments/submissions/"
+    )
+
+    submitted_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    marks_obtained = models.FloatField(
+        null=True,
+        blank=True
+    )
+
+    feedback = models.TextField(
+        blank=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Submitted"
+    )
+
+    class Meta:
+        ordering = ["-submitted_at"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["assignment", "student"],
+                name="unique_assignment_student_submission"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.assignment.title} - {self.student.name}"
+class Notification(models.Model):
+
+    recipient = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+
+    title = models.CharField(
+        max_length=150
+    )
+
+    message = models.TextField()
+
+    is_read = models.BooleanField(
+        default=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.recipient.username} - {self.title}"
 class Exam(models.Model):
 
     EXAM_TYPE_CHOICES = [
@@ -302,6 +590,13 @@ class Notice(models.Model):
     title = models.CharField(max_length=200)
 
     content = models.TextField()
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="notices"
+    )
 
     notice_type = models.CharField(
         max_length=50,

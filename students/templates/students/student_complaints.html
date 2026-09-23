@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}My Complaints | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>My Complaints</h1>
+        <p>Raise and track your complaints.</p>
+    </div>
+
+    <div>
+        <a
+            href="{% url 'create-complaint' %}"
+            class="primary-btn"
+        >
+            + Raise Complaint
+        </a>
+    </div>
+
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Complaint History</h2>
+            <p>Your submitted complaints and their current status.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for complaint in complaints %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ complaint.title }}</strong>
+                    </td>
+
+                    <td>
+                        {{ complaint.category }}
+                    </td>
+
+                    <td>
+                        {{ complaint.priority }}
+                    </td>
+
+                    <td>
+
+                        {% if complaint.status == "Resolved" %}
+
+                            <span class="status-badge success">
+                                ✅ Resolved
+                            </span>
+
+                        {% elif complaint.status == "Rejected" %}
+
+                            <span class="status-badge">
+                                ❌ Rejected
+                            </span>
+
+                        {% elif complaint.status == "In Progress" %}
+
+                            <span class="status-badge">
+                                🔵 In Progress
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge">
+                                🟡 Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ complaint.description }}
+                    </td>
+
+                    <td>
+                        {{ complaint.created_at|date:"d M Y, h:i A" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No complaints found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

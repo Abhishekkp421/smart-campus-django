@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Faculty Subject Mapping</h1>
+        <p>Assign subjects to faculty members</p>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h2>Select Faculty</h2>
+    </div>
+
+    <div class="card-body">
+
+        <form method="get">
+
+            <div class="form-group">
+                <label for="faculty">Faculty</label>
+
+                <select
+                    name="faculty"
+                    id="faculty"
+                    class="form-control"
+                    onchange="this.form.submit()"
+                >
+
+                    <option value="">
+                        Select Faculty
+                    </option>
+
+                    {% for faculty in faculties %}
+
+                    <option
+                        value="{{ faculty.id }}"
+                        {% if selected_faculty and selected_faculty.id == faculty.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ faculty.employee_id }} - {{ faculty.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% if selected_faculty %}
+
+<div class="card">
+
+    <div class="card-header">
+        <h2>
+            Assign Subjects
+        </h2>
+
+        <p>
+            {{ selected_faculty.name }}
+        </p>
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="subject-list">
+
+                {% for checkbox in form.subjects %}
+
+                <div class="subject-item">
+
+                    {{ checkbox.tag }}
+
+                    <label for="{{ checkbox.id_for_label }}">
+                        {{ checkbox.choice_label }}
+                    </label>
+
+                </div>
+
+                {% empty %}
+
+                <p>No subjects available.</p>
+
+                {% endfor %}
+
+            </div>
+
+            <div style="margin-top: 20px;">
+
+                <button type="submit" class="btn btn-primary">
+                    Save Subject Mapping
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

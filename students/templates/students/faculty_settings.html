@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Faculty Settings | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Faculty Settings</h1>
+
+        <p>
+            View and update your personal information.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Profile</h2>
+
+            <p>
+                Update your personal details below.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-container">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error-message">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        <div class="error-message">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.email.id_for_label }}">
+                        Email
+                    </label>
+
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <div class="error-message">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.phone.id_for_label }}">
+                        Phone
+                    </label>
+
+                    {{ form.phone }}
+
+                    {% if form.phone.errors %}
+                        <div class="error-message">
+                            {{ form.phone.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+               <div class="form-group">
+
+    <label for="id_designation">
+        Designation
+    </label>
+
+    <input
+        type="text"
+        name="designation"
+        id="id_designation"
+        value="{{ faculty.designation }}"
+    >
+
+    {% if form.designation.errors %}
+        <div class="error-message">
+            {{ form.designation.errors }}
+        </div>
+    {% endif %}
+
+</div>
+
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn-primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Security</h2>
+
+            <p>
+                Manage your account password.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-actions">
+
+        <a href="{% url 'faculty-change-password' %}"
+           class="btn-primary">
+            Change Password
+        </a>
+
+    </div>
+
+</div>
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Professional Information</h2>
+
+            <p>
+                Professional details are managed by the administration.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <th>Employee ID</th>
+                    <td>{{ faculty.employee_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Department</th>
+                    <td>
+                        {% if faculty.department %}
+                            {{ faculty.department.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Designation</th>
+                    <td>
+                        {{ faculty.designation }}
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

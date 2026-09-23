@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Attendance | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>My Attendance</h1>
+        <p>
+            Attendance record for {{ student.name }}.
+        </p>
+    </div>
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div>
+            <p>Total Classes</p>
+            <h2>{{ total_classes }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div>
+            <p>Present</p>
+            <h2>{{ present_classes }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">❌</div>
+        <div>
+            <p>Absent</p>
+            <h2>{{ absent_classes }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div>
+            <p>Attendance</p>
+            <h2>{{ attendance_percentage }}%</h2>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Attendance History</h2>
+            <p>Your subject-wise attendance records.</p>
+        </div>
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+                    <td>{{ record.date }}</td>
+
+                    <td>
+                        {{ record.subject.code }} -
+                        {{ record.subject.name }}
+                    </td>
+
+                    <td>
+                        {% if record.faculty %}
+                            {{ record.faculty.name }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ record.status }}
+                    </td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        No attendance records available.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

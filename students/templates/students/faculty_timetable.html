@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}My Timetable | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>My Timetable</h1>
+        <p>Class schedule for {{ faculty.name }}.</p>
+    </div>
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Class Schedule</h2>
+            <p>Your assigned classes and subjects.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Room</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for entry in timetable %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ entry.day }}</strong>
+                    </td>
+
+                    <td>
+                        {{ entry.start_time|time:"h:i A" }}
+                        -
+                        {{ entry.end_time|time:"h:i A" }}
+                    </td>
+
+                    <td>
+                        {{ entry.subject.code }}
+                        -
+                        {{ entry.subject.name }}
+                    </td>
+
+                    <td>
+                        {{ entry.course }}
+                    </td>
+
+                    <td>
+                        {{ entry.semester }}
+                    </td>
+
+                    <td>
+                        {% if entry.room %}
+                            {{ entry.room }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No timetable entries assigned to you.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

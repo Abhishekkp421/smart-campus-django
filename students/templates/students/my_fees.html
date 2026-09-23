@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Fees | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>My Fees</h1>
+        <p>
+            Fee details for {{ student.name }}.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">💰</div>
+
+        <div>
+            <p>Total Fee</p>
+            <h2>₹{{ total_fee }}</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">✅</div>
+
+        <div>
+            <p>Paid Amount</p>
+            <h2>₹{{ paid_amount }}</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">⏳</div>
+
+        <div>
+            <p>Remaining Amount</p>
+            <h2>₹{{ remaining_amount }}</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🎓</div>
+
+        <div>
+            <p>Student ID</p>
+            <h2>{{ student.student_id }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Fee History</h2>
+            <p>Your fee payment details.</p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Fee Type</th>
+                    <th>Amount</th>
+                    <th>Paid</th>
+                    <th>Remaining</th>
+                    <th>Due Date</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for fee in fees %}
+
+                <tr>
+
+                    <td>
+                        {{ fee.fee_type }}
+                    </td>
+
+                    <td>
+                        ₹{{ fee.amount }}
+                    </td>
+
+                    <td>
+                        ₹{{ fee.paid_amount }}
+                    </td>
+
+                    <td>
+                         ₹{{ fee.remaining_amount }}
+                    </td>
+
+                    <td>
+                        {{ fee.due_date }}
+                    </td>
+
+                    <td>
+                        {% if fee.payment_date %}
+                            {{ fee.payment_date }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ fee.status }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7" class="empty-state">
+                        No fee records available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

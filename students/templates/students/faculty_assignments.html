@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Faculty Assignments</h1>
+
+        <p>
+            Create and manage assignments for your subjects.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Faculty Information -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Faculty Information</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Faculty ID</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.employee_id }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Faculty Name</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.name }}"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Create Assignment -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Create Assignment</h2>
+
+        <p>
+            Add a new assignment for one of your subjects.
+        </p>
+
+
+        {% if error %}
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+                <!-- Title -->
+
+                <div class="form-group">
+
+                    <label for="title">
+                        Assignment Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter assignment title"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Subject -->
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <select
+                        id="subject"
+                        name="subject"
+                        required
+                    >
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+                        {% for subject in subjects %}
+
+                            <option value="{{ subject.id }}">
+
+                                {{ subject.code }}
+                                - {{ subject.name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Due Date -->
+
+                <div class="form-group">
+
+                    <label for="due_date">
+                        Due Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="due_date"
+                        name="due_date"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Maximum Marks -->
+
+                <div class="form-group">
+
+                    <label for="max_marks">
+                        Maximum Marks
+                    </label>
+
+                    <input
+                        type="number"
+                        id="max_marks"
+                        name="max_marks"
+                        min="1"
+                        placeholder="e.g. 10"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                    placeholder="Enter assignment description"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Create Assignment
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- My Assignments -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>My Assignments</h2>
+
+        <p>
+            Assignments created by you.
+        </p>
+
+
+        {% if assignments %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Title</th>
+                            <th>Subject</th>
+                            <th>Due Date</th>
+                            <th>Max Marks</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for assignment in assignments %}
+
+                            <tr>
+
+                                <td>
+                                    {{ assignment.title }}
+                                </td>
+
+                                <td>
+                                    {{ assignment.subject.code }}
+                                    -
+                                    {{ assignment.subject.name }}
+                                </td>
+
+                                <td>
+                                    {{ assignment.due_date|date:"d M Y" }}
+                                </td>
+
+                                <td>
+                                    {{ assignment.max_marks }}
+                                </td>
+
+                                <td>
+                                  <a
+    href="{% url 'faculty-assignment-submissions' assignment.id %}"
+    class="action-btn"
+>
+    📥 Submissions
+</a>
+                                    <a
+                                        href="{% url 'faculty-edit-assignment' assignment.id %}"
+                                        class="secondary-btn"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'faculty-delete-assignment' assignment.id %}"
+                                        class="danger-btn"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p>
+                No assignments created yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

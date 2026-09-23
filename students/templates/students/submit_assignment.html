@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Submit Assignment | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Submit Assignment</h1>
+        <p>
+            Submit your assignment for evaluation.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>{{ assignment.title }}</h2>
+            <p>
+                {{ assignment.subject.code }} -
+                {{ assignment.subject.name }}
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-body">
+
+            {% if error %}
+
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <div style="margin-bottom: 20px;">
+
+                <p>
+                    <strong>Faculty:</strong>
+
+                    {% if assignment.faculty %}
+                        {{ assignment.faculty.name }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </p>
+
+                <p>
+                    <strong>Due Date:</strong>
+                    {{ assignment.due_date }}
+                </p>
+
+                <p>
+                    <strong>Maximum Marks:</strong>
+                    {{ assignment.max_marks }}
+                </p>
+
+                {% if assignment.description %}
+
+                    <p>
+                        <strong>Description:</strong><br>
+                        {{ assignment.description }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <form
+                method="post"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                <div class="form-group">
+
+                    <label for="submission_file">
+                        Assignment File
+                    </label>
+
+                    <input
+                        type="file"
+                        name="submission_file"
+                        id="submission_file"
+                        class="form-control"
+                        required
+                    >
+
+                </div>
+
+
+                <div style="margin-top: 20px;">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        📤 Submit Assignment
+                    </button>
+
+                    <a
+                        href="{% url 'my-assignments' %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

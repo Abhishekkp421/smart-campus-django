@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Student Settings | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Student Settings</h1>
+
+        <p>
+            View and update your personal information.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Profile</h2>
+
+            <p>
+                Update your personal details below.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-container">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error-message">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        <div class="error-message">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.email.id_for_label }}">
+                        Email
+                    </label>
+
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <div class="error-message">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.phone.id_for_label }}">
+                        Phone
+                    </label>
+
+                    {{ form.phone }}
+
+                    {% if form.phone.errors %}
+                        <div class="error-message">
+                            {{ form.phone.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.date_of_birth.id_for_label }}">
+                        Date of Birth
+                    </label>
+
+                    {{ form.date_of_birth }}
+
+                    {% if form.date_of_birth.errors %}
+                        <div class="error-message">
+                            {{ form.date_of_birth.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.gender.id_for_label }}">
+                        Gender
+                    </label>
+
+                    {{ form.gender }}
+
+                    {% if form.gender.errors %}
+                        <div class="error-message">
+                            {{ form.gender.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label for="{{ form.address.id_for_label }}">
+                        Address
+                    </label>
+
+                    {{ form.address }}
+
+                    {% if form.address.errors %}
+                        <div class="error-message">
+                            {{ form.address.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn-primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Security</h2>
+
+            <p>
+                Manage your account password.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-actions">
+
+        <a href="{% url 'student-change-password' %}"
+           class="btn-primary">
+            Change Password
+        </a>
+
+    </div>
+
+</div>
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Academic Information</h2>
+
+            <p>
+                Academic details are managed by the administration.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <th>Student ID</th>
+                    <td>{{ student.student_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Department</th>
+                    <td>
+                        {% if student.department %}
+                            {{ student.department.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Course</th>
+                    <td>
+                        {% if student.course %}
+                            {{ student.course.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Semester</th>
+                    <td>
+                        {% if student.semester %}
+                            {{ student.semester.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Admission Date</th>
+                    <td>
+                        {{ student.admission_date|date:"M. d, Y" }}
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Apply Leave | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Apply Leave</h1>
+        <p>Submit a new leave request.</p>
+    </div>
+</div>
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Leave Application</h2>
+
+        {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="leave_type">
+                        Leave Type
+                    </label>
+
+                    <select
+                        id="leave_type"
+                        name="leave_type"
+                        required
+                    >
+                        <option value="">
+                            Select Leave Type
+                        </option>
+
+                        <option value="Sick Leave">
+                            Sick Leave
+                        </option>
+
+                        <option value="Casual Leave">
+                            Casual Leave
+                        </option>
+
+                        <option value="Emergency Leave">
+                            Emergency Leave
+                        </option>
+
+                        <option value="Personal Leave">
+                            Personal Leave
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="start_date">
+                        Start Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="start_date"
+                        name="start_date"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="end_date">
+                        End Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="end_date"
+                        name="end_date"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="reason">
+                    Reason
+                </label>
+
+                <textarea
+                    id="reason"
+                    name="reason"
+                    rows="5"
+                    placeholder="Enter reason for leave"
+                    required
+                ></textarea>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Submit Leave Request
+                </button>
+
+                <a
+                    href="{% url 'student-leave-requests' %}"
+                    class="secondary-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

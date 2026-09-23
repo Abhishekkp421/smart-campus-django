@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Library | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>My Library</h1>
+
+        <p>
+            Library books and your issued books.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- AVAILABLE BOOKS -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Available Books</h2>
+
+            <p>
+                Books available in the Smart Campus library.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>ISBN</th>
+                    <th>Available Copies</th>
+                    <th>Shelf</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for book in books %}
+
+                <tr>
+
+                    <td>
+                        {{ book.title }}
+                    </td>
+
+                    <td>
+                        {{ book.author }}
+                    </td>
+
+                    <td>
+                        {{ book.category }}
+                    </td>
+
+                    <td>
+                        {{ book.isbn }}
+                    </td>
+
+                    <td>
+                        {{ book.available_copies }}
+                    </td>
+
+                    <td>
+                        {% if book.shelf_location %}
+                            {{ book.shelf_location }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+                        No books available in the library.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- MY ISSUED BOOKS -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Issued Books</h2>
+
+            <p>
+                Books currently issued to {{ student.name }}.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for issue in issued_books %}
+
+                <tr>
+
+                    <td>
+                        {{ issue.book.title }}
+                    </td>
+
+                    <td>
+                        {{ issue.book.author }}
+                    </td>
+
+                    <td>
+                        {{ issue.issue_date|date:"M. d, Y" }}
+                    </td>
+
+                    <td>
+                        {{ issue.due_date|date:"M. d, Y" }}
+                    </td>
+
+                    <td>
+
+                        {% if issue.return_date %}
+                            {{ issue.return_date|date:"M. d, Y" }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ issue.status }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="empty-state">
+                        You have no issued books.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

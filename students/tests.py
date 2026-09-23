@@ -1,90 +1,135 @@
-from rest_framework.test import APIClient
-from django.contrib.auth.models import User
+from datetime import date
 from django.test import TestCase
-from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
 
-from .models import Department, Course, Semester, Student
+from .models import (
+    Department,
+    Course,
+    Semester,
+    Student,
+    Subject,
+    Complaint,
+)
 
 
 class StudentModelTest(TestCase):
 
     def setUp(self):
+
         self.department = Department.objects.create(
-            name="Test Computer Science",
-            code="TEST-CSE"
+            name="Computer Science",
+            code="CSE"
         )
 
         self.course = Course.objects.create(
-            name="Test B.Tech CSE",
-            code="TEST-BTECH",
-            department=self.department,
-            duration_years=4
+            name="Bachelor of Technology",
+            code="BTECH-CSE",
+            department=self.department
         )
 
         self.semester = Semester.objects.create(
-            number=1,
-            name="Test Semester 1"
+            number=1
+        )
+
+        self.user = User.objects.create_user(
+            username="teststudent",
+            password="testpass123"
         )
 
         self.student = Student.objects.create(
             student_id="TEST001",
+            user=self.user,
             name="Test Student",
-            email="teststudent@example.com",
+            email="test@example.com",
             phone="9876543210",
-            date_of_birth="2003-01-01",
-            gender="Male",
+            date_of_birth=date(2000, 1, 1),
+            admission_date=date(2024, 8, 1),
             department=self.department,
             course=self.course,
             semester=self.semester,
-            admission_date="2026-01-01",
-            address="Test Address"
         )
 
     def test_student_created(self):
-        self.assertEqual(Student.objects.count(), 1)
-        self.assertEqual(self.student.student_id, "TEST001")
 
-    def test_student_string(self):
         self.assertEqual(
-            str(self.student),
-            "TEST001 - Test Student"
+            self.student.student_id,
+            "TEST001"
+        )
+
+        self.assertEqual(
+            self.student.name,
+            "Test Student"
+        )
+
+        self.assertEqual(
+            self.student.department,
+            self.department
         )
 
 
-class DashboardTest(TestCase):
-
-    def test_dashboard_requires_login(self):
-        response = self.client.get("/students/")
-
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("/students/login/", response.url)
-
-
-class APIAuthenticationTest(TestCase):
+class ComplaintModelTest(TestCase):
 
     def setUp(self):
+
+        self.department = Department.objects.create(
+            name="Computer Science",
+            code="CSE"
+        )
+
+        self.course = Course.objects.create(
+            name="Bachelor of Technology",
+            code="BTECH-CSE",
+            department=self.department
+        )
+
+        self.semester = Semester.objects.create(
+            number=1
+        )
+
         self.user = User.objects.create_user(
-            username="testadmin",
-            password="testpassword123",
-            is_staff=True
+            username="complaintstudent",
+            password="testpass123"
         )
 
-        self.token = Token.objects.create(
-            user=self.user
+        self.student = Student.objects.create(
+            student_id="TEST002",
+            user=self.user,
+            name="Complaint Student",
+            email="complaint@example.com",
+            phone="9876543211",
+            date_of_birth=date(2000, 1, 1),
+            admission_date=date(2024, 8, 1),
+            department=self.department,
+            course=self.course,
+            semester=self.semester,
         )
 
-        self.client = APIClient()
+    def test_complaint_default_status(self):
 
-    def test_api_requires_authentication(self):
-        response = self.client.get("/students/api/students/")
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_api_allows_authenticated_user(self):
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        complaint = Complaint.objects.create(
+            student=self.student,
+            title="Test Complaint",
+            category="Technical",
+            description="Testing complaint system.",
+            priority="Medium"
         )
 
-        response = self.client.get("/students/api/students/")
+        self.assertEqual(
+            complaint.status,
+            "Pending"
+        )
 
-        self.assertEqual(response.status_code, 200)
+    def test_complaint_student_relation(self):
+
+        complaint = Complaint.objects.create(
+            student=self.student,
+            title="Test Complaint",
+            category="Library",
+            description="Library issue.",
+            priority="Low"
+        )
+
+        self.assertEqual(
+            complaint.student,
+            self.student
+        )

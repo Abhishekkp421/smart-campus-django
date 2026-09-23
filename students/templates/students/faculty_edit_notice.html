@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Edit Notice</h1>
+        <p>Update your notice details.</p>
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Notice Details</h2>
+
+
+        {% if error %}
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+                <!-- Title -->
+
+                <div class="form-group">
+
+                    <label>
+                        Notice Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ notice.title }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Notice Type -->
+
+                <div class="form-group">
+
+                    <label>
+                        Notice Type
+                    </label>
+
+                    <select
+                        name="notice_type"
+                        required
+                    >
+
+                        {% for value, label in notice_types %}
+
+                            <option
+                                value="{{ value }}"
+                                {% if notice.notice_type == value %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Publish Date -->
+
+                <div class="form-group">
+
+                    <label>
+                        Publish Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="publish_date"
+                        value="{{ notice.publish_date|date:'Y-m-d' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Expiry Date -->
+
+                <div class="form-group">
+
+                    <label>
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="expiry_date"
+                        {% if notice.expiry_date %}
+                            value="{{ notice.expiry_date|date:'Y-m-d' }}"
+                        {% endif %}
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Content -->
+
+            <div class="form-group">
+
+                <label>
+                    Notice Content
+                </label>
+
+                <textarea
+                    name="content"
+                    rows="5"
+                    required
+                >{{ notice.content }}</textarea>
+
+            </div>
+
+
+            <!-- Active -->
+
+            <div class="form-group">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="is_active"
+                        {% if notice.is_active %}
+                            checked
+                        {% endif %}
+                    >
+
+                    Active Notice
+
+                </label>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Save Changes
+                </button>
+
+
+                <a
+                    href="{% url 'faculty-notices' %}"
+                    class="secondary-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

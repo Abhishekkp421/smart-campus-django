@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Faculty Attendance | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Attendance</h1>
+
+        <p>
+            Mark attendance for your assigned subjects.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Faculty Information -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Faculty Information</h2>
+
+            <p>
+                Attendance is being recorded under your faculty account.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <th>Faculty ID</th>
+                    <td>{{ faculty.employee_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Faculty Name</th>
+                    <td>{{ faculty.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Department</th>
+                    <td>
+                        {{ faculty.department.code }} -
+                        {{ faculty.department.name }}
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Attendance Selection -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Mark Attendance</h2>
+
+            <p>
+                Select the date and subject.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if error %}
+
+        <div class="error-message">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <div class="form-container">
+
+        <form method="get">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="date">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value="{{ selected_date }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <select
+                        id="subject"
+                        name="subject"
+                        required
+                    >
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+
+                        {% for subject in subjects %}
+
+                        <option
+                            value="{{ subject.id }}"
+                            {% if selected_subject == subject.id|stringformat:"s" %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ subject.code }} -
+                            {{ subject.name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Load Students
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- Student Attendance -->
+
+{% if students %}
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>Student Attendance</h2>
+
+            <p>
+                Mark Present or Absent for each student.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <input
+                type="hidden"
+                name="date"
+                value="{{ selected_date }}"
+            >
+
+
+            <input
+                type="hidden"
+                name="subject"
+                value="{{ selected_subject }}"
+            >
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Student ID</th>
+
+                        <th>Name</th>
+
+                        <th>Course</th>
+
+                        <th>Semester</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>
+                            {{ student.student_id }}
+                        </td>
+
+                        <td>
+                            {{ student.name }}
+                        </td>
+
+                        <td>
+                            {{ student.course.code }}
+                        </td>
+
+                        <td>
+                            {{ student.semester.name }}
+                        </td>
+
+                        <td>
+
+                            <select
+                                name="student_{{ student.id }}"
+                            >
+
+                                <option
+                                    value="Present"
+                                    {% if student.attendance_status == "Present" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    Present
+                                </option>
+
+
+                                <option
+                                    value="Absent"
+                                    {% if student.attendance_status == "Absent" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    Absent
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Save Attendance
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

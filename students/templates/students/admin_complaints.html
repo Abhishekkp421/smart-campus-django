@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}Complaint Management | Smart Campus{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Complaint Management</h1>
+        <p>Review and manage student complaints.</p>
+    </div>
+
+</div>
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Student Complaints</h2>
+            <p>Update complaint status and provide a response.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Response</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for complaint in complaints %}
+
+                <tr>
+
+                    <td>
+                        {{ complaint.student.name }}
+                        <br>
+                        <small>
+                            {{ complaint.student.student_id }}
+                        </small>
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ complaint.title }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ complaint.category }}
+                    </td>
+
+                    <td>
+                        {{ complaint.priority }}
+                    </td>
+
+                    <td>
+
+                        {% if complaint.status == "Resolved" %}
+
+                            <span class="status-badge success">
+                                ✅ Resolved
+                            </span>
+
+                        {% elif complaint.status == "Rejected" %}
+
+                            <span class="status-badge">
+                                ❌ Rejected
+                            </span>
+
+                        {% elif complaint.status == "In Progress" %}
+
+                            <span class="status-badge">
+                                🔵 In Progress
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge">
+                                🟡 Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ complaint.description }}
+                    </td>
+
+                    <td>
+
+                        {% if complaint.admin_response %}
+                            {{ complaint.admin_response }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <form method="post">
+
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="complaint_id"
+                                value="{{ complaint.id }}"
+                            >
+
+                            <div class="form-group">
+
+                                <select
+                                    name="status"
+                                    required
+                                >
+
+                                    <option
+                                        value="Pending"
+                                        {% if complaint.status == "Pending" %}selected{% endif %}
+                                    >
+                                        Pending
+                                    </option>
+
+                                    <option
+                                        value="In Progress"
+                                        {% if complaint.status == "In Progress" %}selected{% endif %}
+                                    >
+                                        In Progress
+                                    </option>
+
+                                    <option
+                                        value="Resolved"
+                                        {% if complaint.status == "Resolved" %}selected{% endif %}
+                                    >
+                                        Resolved
+                                    </option>
+
+                                    <option
+                                        value="Rejected"
+                                        {% if complaint.status == "Rejected" %}selected{% endif %}
+                                    >
+                                        Rejected
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <textarea
+                                    name="admin_response"
+                                    rows="3"
+                                    placeholder="Enter response"
+                                >{{ complaint.admin_response }}</textarea>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Update Complaint
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td
+                        colspan="8"
+                        class="empty-state"
+                    >
+                        No complaints available.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

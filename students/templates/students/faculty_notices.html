@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Faculty Notices</h1>
+        <p>Create and manage your notices.</p>
+    </div>
+
+</div>
+
+
+<!-- Faculty Information -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Faculty Information</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Faculty ID</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.employee_id }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Faculty Name</label>
+
+                <input
+                    type="text"
+                    value="{{ faculty.name }}"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Create Notice -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Create Notice</h2>
+
+        <p>
+            Publish a notice for students.
+        </p>
+
+
+        {% if error %}
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Notice Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter notice title"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Notice Type
+                    </label>
+
+                    <select
+                        name="notice_type"
+                        required
+                    >
+
+                        {% for value, label in notice_types %}
+
+                            <option value="{{ value }}">
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Publish Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="publish_date"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="expiry_date"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Notice Content
+                </label>
+
+                <textarea
+                    name="content"
+                    rows="5"
+                    placeholder="Enter notice content"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="is_active"
+                        checked
+                    >
+
+                    Active Notice
+
+                </label>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Publish Notice
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- My Notices -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>My Notices</h2>
+
+        <p>
+            Notices created by you.
+        </p>
+
+
+        {% if notices %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Publish Date</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for notice in notices %}
+
+                            <tr>
+
+                                <td>
+                                    {{ notice.title }}
+                                </td>
+
+                                <td>
+                                    {{ notice.notice_type }}
+                                </td>
+
+                                <td>
+                                    {{ notice.publish_date|date:"d M Y" }}
+                                </td>
+
+                                <td>
+
+                                    {% if notice.expiry_date %}
+                                        {{ notice.expiry_date|date:"d M Y" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    {% if notice.is_active %}
+                                        Active
+                                    {% else %}
+                                        Inactive
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="{% url 'faculty-edit-notice' notice.id %}"
+                                        class="secondary-btn"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'faculty-delete-notice' notice.id %}"
+                                        class="danger-btn"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p>
+                No notices created yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

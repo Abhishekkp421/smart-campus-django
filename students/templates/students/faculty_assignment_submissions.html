@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Assignment Submissions</h1>
+
+        <p>
+            {{ assignment.title }}
+            —
+            {{ assignment.subject.code }}
+        </p>
+    </div>
+
+</div>
+
+
+<!-- Assignment Information -->
+
+<div class="form-card submissions-page">
+
+    <div class="form-section">
+
+        <h2>Assignment Information</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Assignment</label>
+
+                <input
+                    type="text"
+                    value="{{ assignment.title }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Subject</label>
+
+                <input
+                    type="text"
+                    value="{{ assignment.subject.code }} - {{ assignment.subject.name }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Due Date</label>
+
+                <input
+                    type="text"
+                    value="{{ assignment.due_date }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Maximum Marks</label>
+
+                <input
+                    type="text"
+                    value="{{ assignment.max_marks }}"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Error -->
+
+{% if error %}
+
+<div class="alert alert-error">
+    {{ error }}
+</div>
+
+{% endif %}
+
+
+<!-- Submissions -->
+
+<div class="form-card">
+
+    <div class="form-section">
+
+        <h2>Student Submissions</h2>
+
+        <p>
+            Review submitted assignments and provide marks and feedback.
+        </p>
+
+
+        {% if submissions %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Student</th>
+
+                        <th>Student ID</th>
+
+                        <th>Submitted At</th>
+
+                        <th>File</th>
+
+                        <th>Marks</th>
+
+                        <th>Feedback</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for submission in submissions %}
+
+                    <tr>
+
+                        <td>
+                            {{ submission.student.name }}
+                        </td>
+
+
+                        <td>
+                            {{ submission.student.student_id }}
+                        </td>
+
+
+                        <td>
+                            {{ submission.submitted_at|date:"d M Y, h:i A" }}
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ submission.submission_file.url }}"
+                                target="_blank"
+                                class="secondary-btn"
+                            >
+                                📄 View File
+                            </a>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if submission.marks_obtained is not None %}
+
+                                {{ submission.marks_obtained }}/{{ assignment.max_marks }}
+
+                            {% else %}
+
+                                Not Evaluated
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if submission.feedback %}
+
+                                {{ submission.feedback }}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <form method="post">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="submission_id"
+                                    value="{{ submission.id }}"
+                                >
+
+
+                                <div class="form-group">
+
+                                    <input
+                                        type="number"
+                                        name="marks"
+                                        min="0"
+                                        max="{{ assignment.max_marks }}"
+                                        step="0.01"
+                                        value="{{ submission.marks_obtained|default:'' }}"
+                                        placeholder="Marks"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <textarea
+                                        name="feedback"
+                                        rows="2"
+                                        placeholder="Feedback"
+                                    >{{ submission.feedback }}</textarea>
+
+                                </div>
+
+
+                                <button
+                                    type="submit"
+                                    class="primary-btn"
+                                >
+                                    {% if submission.marks_obtained is not None %}
+                                        Update Evaluation
+                                    {% else %}
+                                        Evaluate
+                                    {% endif %}
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p>
+            No students have submitted this assignment yet.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div style="margin-top: 20px;">
+
+    <a
+        href="{% url 'faculty-assignments' %}"
+        class="secondary-btn"
+    >
+        ← Back to Assignments
+    </a>
+
+</div>
+
+{% endblock %}

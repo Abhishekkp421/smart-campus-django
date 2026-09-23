@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Notices | Smart Campus
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>My Notices</h1>
+
+        <p>
+            Latest notices and announcements from Smart Campus.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Notice List</h2>
+
+            <p>
+                Important announcements and campus updates.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Title</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for notice in notices %}
+
+                <tr>
+
+                    <td>
+                        {{ notice.title }}
+                    </td>
+
+                    <td>
+                        {{ notice.content }}
+                    </td>
+
+                    <td>
+                        {{ notice.created_at|date:"M. d, Y" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3" class="empty-state">
+                        No notices available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
