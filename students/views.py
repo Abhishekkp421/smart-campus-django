@@ -4167,64 +4167,67 @@ def reports(request):
         )
     else:
         overall_result_percentage = 0
+    
     department_stats = []
 
     for department in Department.objects.all().order_by("name"):
+        student_count = Student.objects.filter(
+            department=department
+        ).count()
 
-     student_count = Student.objects.filter(
-        department=department
-    ).count()
+        department_stats.append({
+            "name": department.name,
+            "code": department.code,
+            "student_count": student_count,
+        })
 
-    department_stats.append({
-        "name": department.name,
-        "code": department.code,
-        "student_count": student_count,
-    })
+    
     course_stats = []
 
     for course in Course.objects.all().order_by("name"):
+        student_count = Student.objects.filter(
+            course=course
+        ).count()
 
-     student_count = Student.objects.filter(
-        course=course
-    ).count()
+        course_stats.append({
+            "name": course.name,
+            "code": course.code,
+            "student_count": student_count,
+        })
 
-    course_stats.append({
-        "name": course.name,
-        "code": course.code,
-        "student_count": student_count,
-    })
+    
     student_performance = []
 
     for student in Student.objects.all().order_by("name"):
+        results = Result.objects.filter(student=student)
 
-     results = Result.objects.filter(student=student)
-
-    student_marks = sum(
-        result.marks_obtained
-        for result in results
-    )
-
-    student_max_marks = sum(
-        result.max_marks
-        for result in results
-    )
-
-    if student_max_marks > 0:
-        student_percentage = round(
-            (student_marks / student_max_marks) * 100,
-            2
+        student_marks = sum(
+            result.marks_obtained
+            for result in results
         )
-    else:
-        student_percentage = 0
 
-    student_performance.append({
-        "name": student.name,
-        "student_id": student.student_id,
-        "total_results": results.count(),
-        "marks_obtained": student_marks,
-        "max_marks": student_max_marks,
-        "percentage": student_percentage,
-    })
+        student_max_marks = sum(
+            result.max_marks
+            for result in results
+        )
+
+        if student_max_marks > 0:
+            student_percentage = round(
+                (student_marks / student_max_marks) * 100,
+                2
+            )
+        else:
+            student_percentage = 0
+
+        student_performance.append({
+            "name": student.name,
+            "student_id": student.student_id,
+            "total_results": results.count(),
+            "marks_obtained": student_marks,
+            "max_marks": student_max_marks,
+            "percentage": student_percentage,
+        })
+
     context = {
         "total_students": total_students,
         "total_faculty": total_faculty,
